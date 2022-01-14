@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.zjw.wanandroid_mvp">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:name="com.jess.arms.base.BaseApplication"
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.main.AuthorInfoActivity"></activity>
+        <activity android:name=".ui.home.SearchResultActivity" />
+        <activity android:name=".ui.home.SearchActivity" />
+        <activity android:name=".ui.main.share.OtherSharedActivity" />
+        <activity android:name=".ui.main.RankActivity" />
+        <activity android:name=".ui.main.QuestionActivity" />
+        <activity android:name=".ui.system.SystemArticleActivity" />
+        <activity android:name=".ui.square.PublishActivity" />
+        <activity android:name=".ui.main.TodoActivity" />
+        <activity android:name=".ui.main.share.MySharedActivity" />
+        <activity android:name=".ui.main.collect.CollectArticleActivity" />
+        <activity android:name=".ui.main.IntegralActivity" />
+        <activity android:name=".ui.main.RegisterActivity" />
+        <activity android:name=".ui.main.SettingsActivity" />
+        <activity
+            android:name=".ui.main.LoginActivity"
+            android:launchMode="singleTask" />
+
+        <meta-data
+            android:name="design_width_in_dp"
+            android:value="360" />
+        <meta-data
+            android:name="design_height_in_dp"
+            android:value="640" />
+        <meta-data
+            android:name="com.zjw.wanandroid_mvp.widget.GlobalConfiguration"
+            android:value="ConfigModule"/>
+
+<!--        <provider-->
+<!--            android:name="androidx.core.content.FileProvider"-->
+<!--            android:authorities="${applicationId}.fileProvider"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true">-->
+<!--            <meta-data-->
+<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+<!--                android:resource="@xml/provider_paths" />-->
+<!--        </provider>-->
+
+        <activity android:name=".ui.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ui.web.WebViewActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme" />
+    </application>
+
+</manifest>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/integral" android:title="我的积分"
+        android:icon="@mipmap/side_integral"
+        app:actionViewClass="android.widget.TextView"/>
+    <item android:id="@+id/collection" android:title="我的收藏"
+        android:icon="@mipmap/side_collection"/>
+    <item android:id="@+id/shared" android:title="我的分享"
+        android:icon="@mipmap/side_shared"/>
+    <item android:id="@+id/todo" android:title="我的待办"
+        android:icon="@mipmap/side_todo"/>
+    <item android:id="@+id/question" android:title="每日一问"
+        android:icon="@mipmap/side_question"/>
+    <item android:id="@+id/nightMode" android:title="夜间模式"
+        android:icon="@mipmap/side_nightmode"/>
+    <item android:id="@+id/settings" android:title="系统设置"
+        android:icon="@mipmap/side_settings"/>
+    <item android:id="@+id/logout" android:title="退出登录"
+        android:icon="@mipmap/icon_logout"/>
+
+</menu>

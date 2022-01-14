@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/menu_home"
+        android:icon="@mipmap/navi_home" android:title="首页" />
+    <item android:id="@+id/menu_square"
+        android:icon="@mipmap/navi_square" android:title="广场" />
+    <item android:id="@+id/menu_public"
+        android:icon="@mipmap/navi_public" android:title="公众号" />
+    <item android:id="@+id/menu_system"
+        android:icon="@mipmap/navi_system" android:title="体系" />
+    <item android:id="@+id/menu_project"
+        android:icon="@mipmap/navi_project" android:title="项目" />
+</menu>

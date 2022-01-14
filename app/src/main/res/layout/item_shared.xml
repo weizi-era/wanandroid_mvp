@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zjw.wanandroid_mvp.widget.SwipeItemLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:id="@+id/rl_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10">
+
+            <TextView
+                android:id="@+id/top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="5dp"
+                android:padding="3dp"
+                android:background="@drawable/text_bg"
+                android:textSize="10sp"
+                android:textColor="@android:color/holo_red_light"
+                android:visibility="visible"
+                android:text="置顶"/>
+
+            <TextView
+                android:id="@+id/tv_new"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/top"
+                android:layout_marginLeft="5dp"
+                android:padding="3dp"
+                android:textSize="10sp"
+                android:layout_margin="5dp"
+                android:textColor="@android:color/holo_red_light"
+                android:background="@drawable/text_bg"
+                android:visibility="visible"
+                android:text="新"/>
+
+            <TextView
+                android:id="@+id/tv_audit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_new"
+                android:layout_marginLeft="5dp"
+                android:padding="3dp"
+                android:textSize="10sp"
+                android:layout_margin="5dp"
+                android:textColor="@color/Blue"
+                android:background="@drawable/audit_bg"
+                android:visibility="visible"
+                android:text="待审核"/>
+
+            <TextView
+                android:id="@+id/author_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/tv_audit"
+                android:layout_margin="5dp"
+                android:text="扔物线"/>
+
+            <TextView
+                android:id="@+id/time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_margin="5dp"
+                android:text="2021-11-27 16:58"/>
+
+            <TextView
+                android:id="@+id/article_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/author_name"
+                android:layout_margin="5dp"
+                android:textSize="16sp"
+                android:maxLines="2"
+                android:textColor="@color/black"
+                android:text="给高级Android工程师的进阶手册"/>
+
+        </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/Red"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:text="删除"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+
+</com.zjw.wanandroid_mvp.widget.SwipeItemLayout>

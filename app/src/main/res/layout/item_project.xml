@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/viewBackground"
+    app:cardCornerRadius="8dp"
+    android:layout_margin="5dp"
+    android:clickable="true"
+    app:cardElevation="4dp"
+    android:focusable="true">
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/dp_10">
+
+
+        <TextView
+            android:id="@+id/author_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:text="扔物线"/>
+
+
+        <ImageView
+            android:id="@+id/project_pic"
+            android:layout_width="100dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@+id/author_name"
+            tools:srcCompat="@drawable/default_project_img"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:text="2021-11-27 16:58"/>
+
+        <TextView
+            android:id="@+id/article_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/author_name"
+            android:layout_toRightOf="@+id/project_pic"
+            android:layout_margin="10dp"
+            android:textSize="16sp"
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:textColor="#201D1D"
+            android:text="用Jetpack Compose做一个完成度较高的WanAndroid app"/>
+
+        <TextView
+            android:id="@+id/article_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/article_title"
+            android:layout_toRightOf="@+id/project_pic"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textSize="16sp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:text="项目使用Android官方的Jetpack Compose完成，遵循MVVM架构思路，以下为本项目用到的框架：\r\njetpack compose, viewModel, retrofit, okhttp, coroutine/flow, paging3，\r\nroom, accompanist, hilt, gson, glide/picasso, navigation."/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/project_pic"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/super_classify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="广场Tab"/>
+
+                <TextView
+                    android:id="@+id/jiantou"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" -> "/>
+
+
+                <TextView
+                    android:id="@+id/classify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="干货资源"/>
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/iv_collection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/star_default" />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
