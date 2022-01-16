@@ -7,6 +7,6 @@
     android:orientation="vertical"
     tools:context=".ui.publics.PublicListFragment">
 
-   <include layout="@layout/include_recyclerview"/>
+   <include layout="@layout/fragment_list" />
 
 </LinearLayout>

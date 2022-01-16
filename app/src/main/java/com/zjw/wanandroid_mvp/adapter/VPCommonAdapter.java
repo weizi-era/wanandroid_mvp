@@ -10,12 +10,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
+import me.yokeyword.fragmentation.SupportFragment;
+
 public class VPCommonAdapter extends FragmentStatePagerAdapter {
 
-    private List<Fragment> fragments;
+    private List<SupportFragment> fragments;
     private List<String> tabNames;
 
-    public VPCommonAdapter(@NonNull @NotNull FragmentManager fm, List<Fragment> fragments, List<String> tabNames) {
+    public VPCommonAdapter(@NonNull @NotNull FragmentManager fm, List<SupportFragment> fragments, List<String> tabNames) {
         super(fm);
         this.fragments = fragments;
         this.tabNames = tabNames;
@@ -33,7 +35,6 @@ public class VPCommonAdapter extends FragmentStatePagerAdapter {
     }
 
     @Nullable
-
     @Override
     public CharSequence getPageTitle(int position) {
         return tabNames.get(position);

@@ -96,11 +96,14 @@ public class SystemArticleActivity extends BaseActivity<SystemArticlePresenter> 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loadService = LoadSir.getDefault().register(refreshLayout, (Callback.OnReloadListener) v -> {
-            Utils.setLoadingColor(loadService);
             loadService.showCallback(LoadingCallback.class);
             currentPage = initPage;
             mPresenter.getArticleList(currentPage, cid);
         });
+
+        Utils.setLoadingColor(loadService);
+
+        loadService.showCallback(LoadingCallback.class);
 
         initAdapter();
 
@@ -158,6 +161,7 @@ public class SystemArticleActivity extends BaseActivity<SystemArticlePresenter> 
 
     @Override
     public void showArticleList(BasePageBean<List<ArticleBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {

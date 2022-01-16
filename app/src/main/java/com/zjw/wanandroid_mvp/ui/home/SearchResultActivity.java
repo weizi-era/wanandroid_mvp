@@ -62,9 +62,6 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
 
     private LoadService loadService;
 
-    ImageView mCollection;
-    private boolean isLogin;
-
     private String key;
 
 
@@ -92,12 +89,13 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
 
         // 绑定loadSir
         loadService = LoadSir.getDefault().register(refreshLayout, (Callback.OnReloadListener) v -> {
-            Utils.setLoadingColor(loadService);
             loadService.showCallback(LoadingCallback.class);
             currentPage = initPage;
             mPresenter.getSearchResultList(currentPage, key);
         });
 
+        Utils.setLoadingColor(loadService);
+        loadService.showCallback(LoadingCallback.class);
 
         initAdapter();
 
@@ -165,6 +163,7 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
 
     @Override
     public void showSearchResultList(BasePageBean<List<ArticleBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {

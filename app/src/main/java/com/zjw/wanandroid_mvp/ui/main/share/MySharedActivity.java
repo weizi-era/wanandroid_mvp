@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.jess.arms.di.component.AppComponent;
+import com.kingja.loadsir.LoadSirUtil;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
@@ -27,18 +28,20 @@ import com.zjw.wanandroid_mvp.bean.SharedBean;
 import com.zjw.wanandroid_mvp.contract.share.MyShareContract;
 import com.zjw.wanandroid_mvp.di.component.share.DaggerMySharedComponent;
 import com.zjw.wanandroid_mvp.di.module.share.MySharedModule;
+import com.zjw.wanandroid_mvp.event.AddEvent;
+import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.presenter.share.MySharePresenter;
 import com.zjw.wanandroid_mvp.ui.square.PublishActivity;
 import com.zjw.wanandroid_mvp.utils.DialogUtil;
 import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
 import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
-import com.zjw.wanandroid_mvp.widget.SpaceItemDecoration;
 import com.zjw.wanandroid_mvp.widget.SwipeItemLayout;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
-import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.jetbrains.annotations.NotNull;
 
 import butterknife.BindView;
@@ -56,12 +59,9 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
 
     private LoadService loadService;
 
-    ImageView mCollection;
-
     private int initPage = 1;
 
     private int currentPage = initPage;
-
 
     @Override
     public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -93,6 +93,8 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
             mPresenter.getMyShareArticle(currentPage);
         });
 
+        Utils.setLoadingColor(loadService);
+        loadService.showCallback(LoadingCallback.class);
 
         initAdapter();
 
@@ -113,7 +115,6 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
                 mPresenter.getMyShareArticle(currentPage);
             }
         });
-
 
         mPresenter.getMyShareArticle(currentPage);
     }
@@ -141,7 +142,6 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
         shareAdapter = new ShareCommonAdapter(R.layout.item_shared);
         recyclerView.setAdapter(shareAdapter);
 
-        recyclerView.addItemDecoration(new SpaceItemDecoration(this));
         recyclerView.addOnItemTouchListener(new SwipeItemLayout.OnSwipeItemTouchListener(this));
 
         shareAdapter.addChildClickViewIds(R.id.btn_delete, R.id.rl_content);
@@ -159,7 +159,6 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
                             @Override
                             public void onConfirm() {
                                 mPresenter.deleteMyShareArticle(data.getId(), position);
-                                adapter.removeAt(position);
                             }
                         });
                 }
@@ -169,6 +168,7 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
 
     @Override
     public void showArticleList(SharedBean bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getShareArticles().getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {
@@ -196,18 +196,17 @@ public class MySharedActivity extends BaseActivity<MySharePresenter> implements 
     @Override
     public void deleteArticle(int position) {
         shareAdapter.removeAt(position);
-
-        EventBus.getDefault().post(this);
         if (shareAdapter.getData().size() == 0) {
-            currentPage = initPage;
-            mPresenter.deleteMyShareArticle(currentPage,position);
+            loadService.showCallback(EmptyCallback.class);
         }
     }
 
-//    @Subscribe(threadMode = ThreadMode.MAIN)
-//    public void onEvent(AddEvent event) {
-//        if (event.success()) {
-//            mPresenter.getMyShareArticle(initPage);
-//        }
-//    }
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(@NonNull AddEvent event) {
+        if (event.getCode() == Constant.SHARE_CODE) {
+            loadService.showCallback(LoadingCallback.class);
+            shareAdapter.setNewInstance(null);
+            mPresenter.getMyShareArticle(initPage);
+        }
+    }
 }

@@ -40,7 +40,7 @@ public class SystemArticlePresenter extends BasePresenter<SystemArticleContract.
                 .subscribe(new Observer<BaseBean<BasePageBean<List<ArticleBean>>>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -59,7 +59,7 @@ public class SystemArticlePresenter extends BasePresenter<SystemArticleContract.
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

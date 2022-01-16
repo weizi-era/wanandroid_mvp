@@ -24,6 +24,7 @@ import com.zjw.wanandroid_mvp.di.component.system.DaggerNaviComponent;
 import com.zjw.wanandroid_mvp.di.module.system.NaviModule;
 import com.zjw.wanandroid_mvp.presenter.system.NaviListPresenter;
 import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
 import org.jetbrains.annotations.NotNull;
 

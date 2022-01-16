@@ -22,7 +22,6 @@ import kotlin.jvm.functions.Function1;
 public class DialogUtil {
 
     private static ProgressDialog dialog;
-    private static Toast toast;
 
     public static void showLoading(Context context) {
         dialog = new ProgressDialog(context);
@@ -33,7 +32,7 @@ public class DialogUtil {
             dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             dialog.setCanceledOnTouchOutside(false);
             dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            dialog.setMessage("请求网络中...");
+            dialog.setMessage("正在登录中...");
             ClipDrawable d = new ClipDrawable(new ColorDrawable(Utils.getColor(context)), Gravity.START, ClipDrawable.HORIZONTAL);
             dialog.setProgressDrawable(d);
             dialog.show();

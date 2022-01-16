@@ -84,15 +84,6 @@ public class SearchActivity extends BaseActivity<HotSearchPresenter> implements 
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
 
-//        hotList = CacheUtil.getHotSearchCache();
-//        historyList = CacheUtil.getHistorySearchCache();
-//
-//        if (historyList != null && historyList.size() == 0) {
-//            empty_history.setVisibility(View.VISIBLE);
-//        } else {
-//            empty_history.setVisibility(View.GONE);
-//        }
-
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -129,20 +120,6 @@ public class SearchActivity extends BaseActivity<HotSearchPresenter> implements 
                 return true;
             }
         });
-
-//        if (hotList != null) {
-//            tagFlowLayout.setAdapter(new TagAdapter<HotSearchBean>(hotList) {
-//                @Override
-//                public View getView(FlowLayout parent, int position, HotSearchBean data) {
-//                    TextView itemTag = (TextView) getLayoutInflater().inflate(R.layout.item_flow_system, tagFlowLayout, false);
-//                    itemTag.setTextColor(Utils.randomColor());
-//                    itemTag.setText(data.getName());
-//                    return itemTag;
-//                }
-//            });
-//        } else {
-//            mPresenter.getHotSearch();
-//        }
 
         mPresenter.getHotSearch();
     }

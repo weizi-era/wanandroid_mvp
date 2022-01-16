@@ -122,7 +122,7 @@
                     android:text="广场Tab"/>
 
                 <TextView
-                    android:id="@+id/jiantou"
+                    android:id="@+id/dian"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="bold"
@@ -141,7 +141,7 @@
 
             </LinearLayout>
 
-            <ImageView
+            <com.zjw.wanandroid_mvp.widget.CollectView
                 android:id="@+id/iv_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

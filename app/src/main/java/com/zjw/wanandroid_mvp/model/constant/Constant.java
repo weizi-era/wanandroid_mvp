@@ -85,5 +85,10 @@ public class Constant {
     public static final int TYPE_ARTICLE = 1;
     public static final int TYPE_PROJECT = 2;
 
+
+    public static final int TODO_CODE = 1;
+    public static final int SHARE_CODE = 2;
+    public static final int DELETE_CODE = 3;
+
 }
 

@@ -80,12 +80,6 @@ public class CacheUtil {
         return mmkv.decodeString("cookie");
     }
 
-//    private static void clearAll() {
-//        MMKV mmkv = MMKV.mmkvWithID("app");
-//        mmkv.clearAll();
-//    }
-
-
     public static List<TreeBean> getPublicTagCache() {
         MMKV mmkv = MMKV.mmkvWithID("cache");
         String publicTag = mmkv.decodeString("public_tag");

@@ -9,6 +9,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.jess.arms.di.component.AppComponent;
@@ -40,6 +41,8 @@ public class RankActivity extends BaseActivity<RankListPresenter> implements Ran
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.ll_integral)
+    LinearLayout linearLayout;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.swipeRecyclerview)
@@ -87,15 +90,17 @@ public class RankActivity extends BaseActivity<RankListPresenter> implements Ran
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loadService = LoadSir.getDefault().register(refreshLayout, new Callback.OnReloadListener() {
+        loadService = LoadSir.getDefault().register(linearLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                Utils.setLoadingColor(loadService);
                 loadService.showCallback(LoadingCallback.class);
                 currentPage = initPage;
                 mPresenter.getRankList(currentPage);
             }
         });
+
+        Utils.setLoadingColor(loadService);
+        loadService.showCallback(LoadingCallback.class);
 
         initAdapter();
 
@@ -140,6 +145,8 @@ public class RankActivity extends BaseActivity<RankListPresenter> implements Ran
 
     @Override
     public void showRankList(BasePageBean<List<RankListBean>> bean) {
+
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {

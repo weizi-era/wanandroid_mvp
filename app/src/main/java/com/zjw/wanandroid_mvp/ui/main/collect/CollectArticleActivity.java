@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import me.yokeyword.fragmentation.SupportFragment;
 
 public class CollectArticleActivity extends BaseActivity<IPresenter> {
 
@@ -33,7 +34,7 @@ public class CollectArticleActivity extends BaseActivity<IPresenter> {
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    private List<Fragment> mFragmentSparseArray = new ArrayList<>();
+    private List<SupportFragment> mFragmentSparseArray = new ArrayList<>();
     private List<String> tabName = new ArrayList<>();
 
     @Override

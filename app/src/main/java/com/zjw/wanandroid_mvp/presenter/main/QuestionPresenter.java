@@ -42,7 +42,7 @@ public class QuestionPresenter extends BasePresenter<QuestionContract.IQuestionM
                 .subscribe(new Observer<BaseBean<BasePageBean<List<ArticleBean>>>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                       mRootView.showLoading();
+
                     }
 
                     @Override
@@ -61,7 +61,7 @@ public class QuestionPresenter extends BasePresenter<QuestionContract.IQuestionM
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

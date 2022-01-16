@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:textColor="@color/black"
+        android:textSize="18sp"
         android:text="4860"/>
 
     <TextView
@@ -20,6 +21,7 @@
         android:layout_marginLeft="20dp"
         android:layout_toRightOf="@+id/rank"
         android:textColor="@color/black"
+        android:textSize="16sp"
         android:text="18435154490"/>
 
     <TextView
@@ -29,6 +31,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="10dp"
         android:textColor="@color/purple_200"
+        android:textSize="16sp"
         android:text="253"/>
 
 </RelativeLayout>

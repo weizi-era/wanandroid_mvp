@@ -36,10 +36,6 @@ import butterknife.OnClick;
 
 public class LoginActivity extends BaseActivity<LoginPresenter> implements LoginContract.ILoginView {
 
-    private String username;
-    private String password;
-    private String nickName;
-
     @BindView(R.id.et_name)
     EditText mName;
     @BindView(R.id.et_pwd)
@@ -56,8 +52,6 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
     Toolbar mToolbar;
 
     boolean isShow = false;
-    boolean isLogin;
-
 
     @Override
     public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -117,6 +111,7 @@ public class LoginActivity extends BaseActivity<LoginPresenter> implements Login
             ToastUtil.show(LoginActivity.this, "请输入用户名或密码");
             return;
         }
+
         mPresenter.login(mName.getText().toString(), mPwd.getText().toString());
     }
 

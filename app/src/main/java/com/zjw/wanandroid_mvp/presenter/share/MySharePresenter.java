@@ -36,7 +36,7 @@ public class MySharePresenter extends BasePresenter<MyShareContract.IMyShareMode
                 .subscribe(new Observer<BaseBean<SharedBean>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -55,7 +55,7 @@ public class MySharePresenter extends BasePresenter<MyShareContract.IMyShareMode
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }
@@ -69,7 +69,7 @@ public class MySharePresenter extends BasePresenter<MyShareContract.IMyShareMode
                 .subscribe(new Observer<BaseBean<Object>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -88,7 +88,7 @@ public class MySharePresenter extends BasePresenter<MyShareContract.IMyShareMode
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

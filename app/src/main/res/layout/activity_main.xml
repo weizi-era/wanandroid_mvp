@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/white"
+            android:layout_marginBottom="?actionBarSize"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -36,16 +37,16 @@
             app:itemTextColor="@drawable/navi_selector"
             app:menu="@menu/navigation"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floating_action_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="60dp"
-            app:layout_behavior=".widget.ScaleDownShowBehavior"
-            app:srcCompat="@drawable/ic_arrow_upward_white_24dp" />
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/floating_action_btn"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="bottom|end"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_marginRight="20dp"-->
+<!--            android:layout_marginBottom="60dp"-->
+<!--            app:layout_behavior=".widget.ScaleDownShowBehavior"-->
+<!--            app:srcCompat="@drawable/ic_arrow_upward_white_24dp" />-->
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

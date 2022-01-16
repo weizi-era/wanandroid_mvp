@@ -28,9 +28,6 @@ public class ShareCommonAdapter extends BaseQuickAdapter<ArticleBean, BaseViewHo
         viewHolder.setText(R.id.author_name, TextUtils.isEmpty(bean.getAuthor()) ? bean.getShareUser() : bean.getAuthor())
                 .setText(R.id.article_title, bean.getTitle())
                 .setText(R.id.time, bean.getNiceDate())
-                .setText(R.id.super_classify, bean.getSuperChapterName())
-                .setText(R.id.classify, bean.getChapterName())
-                .setImageResource(R.id.iv_collection, bean.isCollect() ? R.mipmap.star_collected : R.mipmap.star_default)
                 .setGone(R.id.tv_audit, bean.getAudit() != 0)
                 .setGone(R.id.tv_new, !bean.isFresh());
     }

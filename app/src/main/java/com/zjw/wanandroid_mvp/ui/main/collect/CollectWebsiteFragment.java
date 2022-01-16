@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,29 +14,25 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jess.arms.di.component.AppComponent;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.zjw.wanandroid_mvp.R;
-import com.zjw.wanandroid_mvp.adapter.WebsiteAdapter;
+import com.zjw.wanandroid_mvp.adapter.CollectWebsiteAdapter;
 import com.zjw.wanandroid_mvp.base.BaseFragment;
-import com.zjw.wanandroid_mvp.bean.ArticleBean;
-import com.zjw.wanandroid_mvp.bean.BaseBean;
-import com.zjw.wanandroid_mvp.bean.BasePageBean;
 import com.zjw.wanandroid_mvp.bean.WebsiteBean;
 import com.zjw.wanandroid_mvp.contract.collect.CollectWebsiteContract;
 import com.zjw.wanandroid_mvp.di.component.collect.DaggerCollectWebsiteComponent;
 import com.zjw.wanandroid_mvp.di.module.collect.CollectWebsiteModule;
 import com.zjw.wanandroid_mvp.event.CollectEvent;
-import com.zjw.wanandroid_mvp.model.constant.Constant;
-import com.zjw.wanandroid_mvp.contract.collect.CollectArticleContract;
-import com.zjw.wanandroid_mvp.presenter.collect.CollectArticlePresenter;
 import com.zjw.wanandroid_mvp.presenter.collect.CollectWebsitePresenter;
 import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
-import com.zjw.wanandroid_mvp.utils.ToastUtil;
+import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -53,9 +47,11 @@ public class CollectWebsiteFragment extends BaseFragment<CollectWebsitePresenter
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.swipeRecyclerview)
     SwipeRecyclerView recyclerView;
+    @BindView(R.id.floating_action_btn)
+    FloatingActionButton floatingActionButton;
 
     private LoadService loadService;
-    private WebsiteAdapter websiteAdapter;
+    private CollectWebsiteAdapter websiteAdapter;
 
     @Override
     public void setupFragmentComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -73,11 +69,12 @@ public class CollectWebsiteFragment extends BaseFragment<CollectWebsitePresenter
         loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.swipeRefreshLayout), new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                Utils.setLoadingColor(loadService);
                 loadService.showCallback(LoadingCallback.class);
                 mPresenter.getWebsiteList();
             }
         });
+
+        Utils.setLoadingColor(loadService);
 
         return rootView;
     }
@@ -86,12 +83,53 @@ public class CollectWebsiteFragment extends BaseFragment<CollectWebsitePresenter
     public void initData(@Nullable Bundle savedInstanceState) {
 
         initAdapter();
+
+        //初始化 swipeRefreshLayout
+        refreshLayout.setColorSchemeColors(Utils.getColor(_mActivity));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mPresenter.getWebsiteList();
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToTop();
+            }
+        });
+
+        //初始化recyclerview
+        RecyclerUtil.initRecyclerView(_mActivity, recyclerView, new SwipeRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mPresenter.getWebsiteList();
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView1, int dx, int dy) {
+                super.onScrolled(recyclerView1, dx, dy);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        loadService.showCallback(LoadingCallback.class);
+        recyclerView.setAdapter(websiteAdapter);
+        mPresenter.getWebsiteList();
+    }
 
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        websiteAdapter = new WebsiteAdapter(R.layout.item_website);
+        websiteAdapter = new CollectWebsiteAdapter(R.layout.item_collect_website);
         recyclerView.setAdapter(websiteAdapter);
 
         websiteAdapter.addChildClickViewIds(R.id.iv_collection);
@@ -112,13 +150,33 @@ public class CollectWebsiteFragment extends BaseFragment<CollectWebsitePresenter
         });
     }
 
+    public void scrollToTop() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (layoutManager.findFirstVisibleItemPosition() >= 40) {
+            recyclerView.scrollToPosition(0);
+        } else {
+            recyclerView.smoothScrollToPosition(0);
+        }
+    }
+
     @Override
     public void showWebsiteList(List<WebsiteBean> bean) {
-        websiteAdapter.setList(bean);
+        refreshLayout.setRefreshing(false);
+        if (bean.size() == 0) {
+            loadService.showCallback(EmptyCallback.class);
+        } else {
+            loadService.showSuccess();
+            websiteAdapter.setNewInstance(bean);
+        }
     }
 
     @Override
     public void unCollect(int position) {
         new CollectEvent(false, websiteAdapter.getItem(position).getId()).post();
+        if (websiteAdapter.getData().size() > 1) {
+            websiteAdapter.removeAt(position);
+        } else {
+            loadService.showCallback(EmptyCallback.class);
+        }
     }
 }

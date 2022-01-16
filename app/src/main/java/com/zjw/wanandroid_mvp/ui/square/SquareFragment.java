@@ -2,6 +2,7 @@ package com.zjw.wanandroid_mvp.ui.square;
 
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -22,6 +24,7 @@ import com.blankj.utilcode.util.SPUtils;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jess.arms.di.component.AppComponent;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -63,6 +66,8 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.swipeRecyclerview)
     SwipeRecyclerView recyclerView;
+    @BindView(R.id.floating_action_btn)
+    FloatingActionButton floatingActionButton;
 
     private int initPage = 0;
     private int currentPage = initPage;
@@ -82,26 +87,26 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
                 .inject(this);
     }
 
-    @Override
-    public boolean useEventBus() {
-        return true;
-    }
 
     @Override
     public View initView(@NonNull @NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_square, container, false);
         loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.swipeRefreshLayout), (Callback.OnReloadListener) v -> {
-            Utils.setLoadingColor(loadService);
             loadService.showCallback(LoadingCallback.class);
             currentPage = initPage;
             mPresenter.getArticleList(currentPage);
         });
+
+        setHasOptionsMenu(true);
+
+        Utils.setLoadingColor(loadService);
 
         return rootView;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
+
         initAdapter();
 
         //初始化 swipeRefreshLayout
@@ -114,6 +119,13 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
             }
         });
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToTop();
+            }
+        });
+
         //初始化recyclerview
         RecyclerUtil.initRecyclerView(_mActivity, recyclerView, new SwipeRecyclerView.LoadMoreListener() {
             @Override
@@ -122,11 +134,31 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView1, int dx, int dy) {
+                super.onScrolled(recyclerView1, dx, dy);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         mPresenter.getArticleList(currentPage);
+    }
+
+    public void scrollToTop() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (layoutManager.findFirstVisibleItemPosition() >= 40) {
+            recyclerView.scrollToPosition(0);
+        } else {
+            recyclerView.smoothScrollToPosition(0);
+        }
     }
 
     @Override
     public void showArticleList(BasePageBean<List<ArticleBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {
@@ -149,6 +181,14 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
                 }
             }, 200);
         }
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        loadService.showCallback(LoadingCallback.class);
+        recyclerView.setAdapter(mAdapter);
+        mPresenter.getArticleList(currentPage);
     }
 
     @Override
@@ -196,9 +236,8 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
     public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                if (isLogin) {
+                if (CacheUtil.isLogin()) {
                     Intent intent = new Intent(mContext, PublishActivity.class);
-                    intent.putExtra("username", CacheUtil.getUserInfo().getUsername());
                     startActivity(intent);
                 } else {
                     ToastUtil.show(mContext, "请先登录");
@@ -207,5 +246,26 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Subscribe
+    public void freshLogin(@NonNull LoginEvent event) {
+        List<ArticleBean> data = mAdapter.getData();
+        if (event.isLogin()) {
+            event.getCollectIds().forEach(item -> {
+                for (ArticleBean item1 : data) {
+                    if (item1.getId() == Integer.parseInt(String.valueOf(item))) {
+                        item1.setCollect(true);
+                        break;
+                    }
+                }
+            });
+        } else {
+            for (ArticleBean item1 : data) {
+                item1.setCollect(false);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
     }
 }

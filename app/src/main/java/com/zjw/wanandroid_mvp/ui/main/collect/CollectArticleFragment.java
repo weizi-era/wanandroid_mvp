@@ -2,6 +2,7 @@ package com.zjw.wanandroid_mvp.ui.main.collect;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jess.arms.di.component.AppComponent;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -24,6 +26,7 @@ import com.kingja.loadsir.core.LoadSir;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.adapter.ArticleAdapter;
+import com.zjw.wanandroid_mvp.adapter.CollectArticleAdapter;
 import com.zjw.wanandroid_mvp.bean.ArticleBean;
 import com.zjw.wanandroid_mvp.base.BaseFragment;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;
@@ -33,6 +36,7 @@ import com.zjw.wanandroid_mvp.di.module.collect.CollectArticleModule;
 import com.zjw.wanandroid_mvp.event.CollectEvent;
 import com.zjw.wanandroid_mvp.presenter.collect.CollectArticlePresenter;
 import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
+import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.ToastUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
@@ -51,6 +55,8 @@ public class CollectArticleFragment extends BaseFragment<CollectArticlePresenter
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.swipeRecyclerview)
     SwipeRecyclerView recyclerView;
+    @BindView(R.id.floating_action_btn)
+    FloatingActionButton floatingActionButton;
 
 
     private int initPage = 0;
@@ -58,10 +64,7 @@ public class CollectArticleFragment extends BaseFragment<CollectArticlePresenter
 
     private LoadService loadService;
 
-    private ArticleAdapter articleAdapter;
-
-    ImageView mCollection;
-
+    private CollectArticleAdapter articleAdapter;
 
     @Override
     public void setupFragmentComponent(@NonNull AppComponent appComponent) {
@@ -78,12 +81,13 @@ public class CollectArticleFragment extends BaseFragment<CollectArticlePresenter
         loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.swipeRefreshLayout), new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                Utils.setLoadingColor(loadService);
                 loadService.showCallback(LoadingCallback.class);
                 currentPage = initPage;
                 mPresenter.getArticleList(currentPage);
             }
         });
+
+        Utils.setLoadingColor(loadService);
 
         return rootView;
     }
@@ -92,13 +96,46 @@ public class CollectArticleFragment extends BaseFragment<CollectArticlePresenter
     public void initData(@Nullable Bundle savedInstanceState) {
         initAdapter();
 
-        mPresenter.getArticleList(currentPage);
+        //初始化 swipeRefreshLayout
+        refreshLayout.setColorSchemeColors(Utils.getColor(_mActivity));
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                currentPage = initPage;
+                mPresenter.getArticleList(currentPage);
+            }
+        });
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToTop();
+            }
+        });
+
+        //初始化recyclerview
+        RecyclerUtil.initRecyclerView(_mActivity, recyclerView, new SwipeRecyclerView.LoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                mPresenter.getArticleList(currentPage);
+            }
+        });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView1, int dx, int dy) {
+                super.onScrolled(recyclerView1, dx, dy);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
 
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        articleAdapter = new ArticleAdapter();
+        articleAdapter = new CollectArticleAdapter();
         recyclerView.setAdapter(articleAdapter);
 
         articleAdapter.addChildClickViewIds(R.id.iv_collection);
@@ -122,18 +159,27 @@ public class CollectArticleFragment extends BaseFragment<CollectArticlePresenter
     @Override
     public void onLazyInitView(@Nullable Bundle savedInstanceState) {
         super.onLazyInitView(savedInstanceState);
-        recyclerView.setAdapter(articleAdapter);
         loadService.showCallback(LoadingCallback.class);
+        recyclerView.setAdapter(articleAdapter);
         mPresenter.getArticleList(currentPage);
+    }
+
+    public void scrollToTop() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (layoutManager.findFirstVisibleItemPosition() >= 40) {
+            recyclerView.scrollToPosition(0);
+        } else {
+            recyclerView.smoothScrollToPosition(0);
+        }
     }
 
     @Override
     public void showArticleList(BasePageBean<List<ArticleBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {
             loadService.showSuccess();
-
             articleAdapter.setNewInstance(bean.getDatas());
         } else {
             loadService.showSuccess();
@@ -157,7 +203,7 @@ public class CollectArticleFragment extends BaseFragment<CollectArticlePresenter
 
     @Override
     public void unCollect(int position) {
-        new CollectEvent(false, articleAdapter.getItem(position).getOriginId()).post();
+        new CollectEvent(false, articleAdapter.getItem(position).getOriginId(), this.getClass().getSimpleName()).post();
         if (articleAdapter.getData().size() > 1) {
             articleAdapter.removeAt(position);
         } else {

@@ -72,7 +72,7 @@ public class CollectArticlePresenter extends BasePresenter<CollectArticleContrac
                 .subscribe(new Observer<BaseBean<Object>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -91,7 +91,7 @@ public class CollectArticlePresenter extends BasePresenter<CollectArticleContrac
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

@@ -17,8 +17,8 @@ public class RankListAdapter extends BaseQuickAdapter<RankListBean, BaseViewHold
     @Override
     protected void convert(@NotNull BaseViewHolder viewHolder, RankListBean bean) {
 
-        viewHolder.setText(R.id.username, bean.getCoinInfo().getUsername())
-                .setText(R.id.rank, bean.getCoinInfo().getRank())
-                .setText(R.id.rank_number, String.valueOf(bean.getCoinInfo().getCoinCount()));
+        viewHolder.setText(R.id.username, bean.getUsername())
+                .setText(R.id.rank, bean.getRank())
+                .setText(R.id.rank_number, String.valueOf(bean.getCoinCount()));
     }
 }

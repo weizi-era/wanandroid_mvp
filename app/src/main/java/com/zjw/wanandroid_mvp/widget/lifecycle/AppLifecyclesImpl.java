@@ -1,4 +1,4 @@
-package com.zjw.wanandroid_mvp.widget;
+package com.zjw.wanandroid_mvp.widget.lifecycle;
 
 import android.app.Application;
 import android.content.Context;

@@ -40,7 +40,7 @@ public class IntegralPresenter extends BasePresenter<IntegralContract.IIntegralM
                 .subscribe(new Observer<BaseBean<BasePageBean<List<ScoreListBean>>>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -59,7 +59,7 @@ public class IntegralPresenter extends BasePresenter<IntegralContract.IIntegralM
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

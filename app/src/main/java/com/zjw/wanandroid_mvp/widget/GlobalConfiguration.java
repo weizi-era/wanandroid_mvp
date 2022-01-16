@@ -14,6 +14,9 @@ import com.jess.arms.di.module.GlobalConfigModule;
 import com.jess.arms.http.imageloader.glide.GlideImageLoaderStrategy;
 import com.jess.arms.integration.ConfigModule;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
+import com.zjw.wanandroid_mvp.widget.lifecycle.ActivityLifecycleCallbacksImpl;
+import com.zjw.wanandroid_mvp.widget.lifecycle.AppLifecyclesImpl;
+import com.zjw.wanandroid_mvp.widget.lifecycle.FragmentLifecycleCallbacksImpl;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -67,11 +70,11 @@ public class GlobalConfiguration implements ConfigModule {
 
     @Override
     public void injectActivityLifecycle(@NonNull @NotNull Context context, @NonNull @NotNull List<Application.ActivityLifecycleCallbacks> lifecycles) {
-
+        lifecycles.add(new ActivityLifecycleCallbacksImpl());
     }
 
     @Override
     public void injectFragmentLifecycle(@NonNull @NotNull Context context, @NonNull @NotNull List<FragmentManager.FragmentLifecycleCallbacks> lifecycles) {
-
+        lifecycles.add(new FragmentLifecycleCallbacksImpl());
     }
 }

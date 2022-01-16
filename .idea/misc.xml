@@ -4,7 +4,43 @@
     <asm skipDebug="false" skipFrames="false" skipCode="false" expandFrames="false" />
     <groovy codeStyle="LEGACY" />
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/activity_author_info.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/activity_main.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/activity_question.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/activity_rank.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/activity_settings.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/activity_shared.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_collection_article.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_collection_website.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_home.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_list.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_navi_list.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_project.xml" value="0.18020833333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_project_list.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_public.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_public_list.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_square.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_system.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/fragment_system_list.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/include_recyclerview.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_collect.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_collect_article.xml" value="0.36614583333333334" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_collect_project.xml" value="0.36614583333333334" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_collect_website.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_home.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_project.xml" value="0.5" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_rank.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_shared.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/item_website.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/layout/layout_loading.xml" value="0.3536458333333333" />
+        <entry key="..\:/workspace/AndroidStudioProjects/wanandroid_mvp/app/src/main/res/menu/menu_searchlist.xml" value="0.3536458333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

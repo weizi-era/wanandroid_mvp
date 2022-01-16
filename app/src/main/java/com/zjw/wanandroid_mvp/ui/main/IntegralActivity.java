@@ -84,12 +84,13 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter> implements
         loadService = LoadSir.getDefault().register(refreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
-                Utils.setLoadingColor(loadService);
                 loadService.showCallback(LoadingCallback.class);
                 currentPage = initPage;
                 mPresenter.getScoreList(currentPage);
             }
         });
+
+        Utils.setLoadingColor(loadService);
 
         initAdapter();
 
@@ -128,6 +129,7 @@ public class IntegralActivity extends BaseActivity<IntegralPresenter> implements
 
     @Override
     public void showScoreList(BasePageBean<List<ScoreListBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {

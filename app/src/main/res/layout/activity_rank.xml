@@ -11,6 +11,7 @@
     <include layout="@layout/toolbar"/>
 
     <LinearLayout
+        android:id="@+id/ll_integral"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -61,38 +62,37 @@
                     android:id="@+id/rank"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="10dp"
                     android:text="4860"
-                    android:textSize="18sp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/Deep_Orange" />
+                    android:textColor="@color/Deep_Orange"
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_marginLeft="20dp"
                     android:layout_toRightOf="@+id/rank"
                     android:text="18435154490"
-                    android:textSize="16sp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/Deep_Orange" />
+                    android:textColor="@color/Deep_Orange"
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/score"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
                     android:layout_marginRight="10dp"
                     android:text="253"
-                    android:textSize="16sp"
-                    android:layout_centerVertical="true"
-                    android:textColor="@color/Deep_Orange" />
+                    android:textColor="@color/Deep_Orange"
+                    android:textSize="16sp" />
 
             </RelativeLayout>
 
         </androidx.cardview.widget.CardView>
-
 
     </LinearLayout>
 

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:clickable="true"
-    android:focusable="true"
     android:foreground="?attr/selectableItemBackground"
     app:cardBackgroundColor="@color/viewBackground"
     app:cardCornerRadius="8dp"
     android:layout_margin="5dp"
-    app:cardElevation="4dp">
+    android:clickable="true"
+    app:cardElevation="4dp"
+    android:focusable="true">
 
     <RelativeLayout
         android:id="@+id/rl_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="@dimen/dp_10">
+
 
         <TextView
             android:id="@+id/author_name"
@@ -25,27 +26,6 @@
             android:layout_margin="5dp"
             android:text="扔物线"/>
 
-        <TextView
-            android:id="@+id/classify_tag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/author_name"
-            android:text="干货资源"
-            android:background="@drawable/tag_bg"
-            android:padding="3dp"
-            android:textSize="10sp"
-            android:layout_margin="5dp"
-            android:visibility="visible"
-            android:textColor="@color/Indigo"/>
-
-
-        <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_margin="5dp"
-            android:text="2021-11-27 16:58"/>
 
         <ImageView
             android:id="@+id/project_pic"
@@ -56,6 +36,14 @@
             tools:srcCompat="@drawable/default_project_img"/>
 
         <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_margin="5dp"
+            android:text="2021-11-27 16:58"/>
+
+        <TextView
             android:id="@+id/article_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,9 +51,11 @@
             android:layout_toRightOf="@+id/project_pic"
             android:layout_margin="10dp"
             android:textSize="16sp"
-            android:maxLines="2"
-            android:textColor="@color/black"
-            android:text="给高级Android工程师的进阶手册"/>
+            android:maxLines="1"
+            android:textStyle="bold"
+            android:ellipsize="end"
+            android:textColor="#201D1D"
+            android:text="用Jetpack Compose做一个完成度较高的WanAndroid app"/>
 
         <TextView
             android:id="@+id/article_desc"
@@ -75,37 +65,41 @@
             android:layout_toRightOf="@+id/project_pic"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:textSize="16sp"
             android:maxLines="3"
             android:ellipsize="end"
             android:text="项目使用Android官方的Jetpack Compose完成，遵循MVVM架构思路，以下为本项目用到的框架：\r\njetpack compose, viewModel, retrofit, okhttp, coroutine/flow, paging3，\r\nroom, accompanist, hilt, gson, glide/picasso, navigation."/>
 
-        <TextView
-            android:id="@+id/article_chapterName"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/article_title"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="10dp"
-            android:layout_toRightOf="@+id/project_pic"
-            android:gravity="center"
-            android:textColor="@color/Grey600"
-            android:textSize="12sp"
-            tools:text="@string/app_name" />
+            android:layout_below="@+id/project_pic"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="5dp">
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/classify"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="干货资源"/>
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/iv_collection"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:src="@mipmap/star_default" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

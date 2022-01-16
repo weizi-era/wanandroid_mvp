@@ -72,8 +72,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     Toolbar mToolbar;
     @BindView(R.id.nav_view)
     NavigationView mNavigationView;
-    @BindView(R.id.floating_action_btn)
-    FloatingActionButton floatingActionButton;
 
     private HomeFragment mHomeFragment;
     private SquareFragment mSquareFragment;
@@ -111,13 +109,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         setSupportActionBar(mToolbar);
 
         initBottomNavigation();
-
-        floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mHomeFragment.scrollToTop();
-            }
-        });
 
         initDrawerLayout();
 
@@ -402,24 +393,5 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     public void showLogoutSuccess() {
         CacheUtil.setUserInfo(null);
         new LoginEvent(false).post();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (mIndex == INDEX_HOME) {
-            getMenuInflater().inflate(R.menu.menu_search, menu);
-        }
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull @NotNull MenuItem item) {
-
-        switch (item.getItemId()) {
-            case R.id.action_search:
-                startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                break;
-        }
-        return super.onOptionsItemSelected(item);
     }
 }

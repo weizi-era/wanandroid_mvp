@@ -38,10 +38,8 @@ import butterknife.BindView;
 
 public class SystemListFragment extends BaseFragment<SystemPresenter> implements SystemContract.ISystemView {
 
-    @BindView(R.id.swipeRefreshLayout)
-    SwipeRefreshLayout refreshLayout;
-    @BindView(R.id.swipeRecyclerview)
-    SwipeRecyclerView recyclerView;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerView;
 
     private LoadService loadService;
 
@@ -59,23 +57,31 @@ public class SystemListFragment extends BaseFragment<SystemPresenter> implements
     @Override
     public View initView(@NonNull @NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_system_list, container, false);
-        loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.swipeRefreshLayout), (Callback.OnReloadListener) v -> {
-            Utils.setLoadingColor(loadService);
+        loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.recyclerview), (Callback.OnReloadListener) v -> {
             loadService.showCallback(LoadingCallback.class);
             mPresenter.getSystemList();
         });
+
+        Utils.setLoadingColor(loadService);
         return rootView;
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        loadService.showCallback(LoadingCallback.class);
+        recyclerView.setAdapter(adapter);
+        mPresenter.getSystemList();
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         initAdapter();
-        mPresenter.getSystemList();
     }
 
     @Override
     public void showSystemList(List<SystemBean> bean) {
-       adapter.setList(bean);
+        adapter.setList(bean);
     }
 
     private void initAdapter() {

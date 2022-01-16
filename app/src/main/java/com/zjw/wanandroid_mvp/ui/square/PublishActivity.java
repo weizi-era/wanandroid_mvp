@@ -15,11 +15,15 @@ import android.widget.TextView;
 import com.jess.arms.di.component.AppComponent;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.base.BaseActivity;
+import com.zjw.wanandroid_mvp.bean.CoinInfo;
+import com.zjw.wanandroid_mvp.bean.UserBean;
 import com.zjw.wanandroid_mvp.contract.square.PublishContract;
 import com.zjw.wanandroid_mvp.di.component.square.DaggerPublishComponent;
 import com.zjw.wanandroid_mvp.di.module.square.PublishModule;
 import com.zjw.wanandroid_mvp.event.AddEvent;
+import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.presenter.square.PublishPresenter;
+import com.zjw.wanandroid_mvp.utils.CacheUtil;
 import com.zjw.wanandroid_mvp.utils.DialogUtil;
 import com.zjw.wanandroid_mvp.utils.ToastUtil;
 
@@ -57,9 +61,8 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
 
     @Override
     public void initData(@Nullable  Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        String username = intent.getStringExtra("username");
-        shared_user.setText(username);
+
+        shared_user.setText("");
 
         toolbar.setTitle("分享文章");
         setSupportActionBar(toolbar);
@@ -72,23 +75,23 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
                 String title = articleTitle.getText().toString();
                 String link = articleLink.getText().toString();
 
+                if (TextUtils.isEmpty(title)) {
+                    ToastUtil.show(PublishActivity.this, "标题不能为空");
+                    return;
+                }
+                if (TextUtils.isEmpty(link)) {
+                    ToastUtil.show(PublishActivity.this, "链接不能为空");
+                    return;
+                }
+
+                if (!link.startsWith("http://") && !link.startsWith("https://")) {
+                    ToastUtil.show(PublishActivity.this, "链接必须以 http:// 或者 https:// 开头！");
+                    return;
+                }
+
                 DialogUtil.showConfirmDialog(PublishActivity.this, "确定分享吗？", new DialogUtil.ConfirmListener() {
                     @Override
                     public void onConfirm() {
-                        if (TextUtils.isEmpty(title)) {
-                            ToastUtil.show(PublishActivity.this, "标题不能为空");
-                            return;
-                        }
-                        if (TextUtils.isEmpty(link)) {
-                            ToastUtil.show(PublishActivity.this, "链接不能为空");
-                            return;
-                        }
-
-                        if (!link.startsWith("http://") && !link.startsWith("https://")) {
-                            ToastUtil.show(PublishActivity.this, "链接必须以 http:// 或者 https:// 开头！");
-                            return;
-                        }
-
                         mPresenter.addArticle(title, link);
                     }
                 });
@@ -104,8 +107,7 @@ public class PublishActivity extends BaseActivity<PublishPresenter> implements P
 
     @Override
     public void addArticle() {
-        new AddEvent(AddEvent.getShareCode()).post();
-
+        new AddEvent(Constant.SHARE_CODE).post();
         finish();
     }
 }

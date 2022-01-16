@@ -15,6 +15,9 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.jess.arms.di.component.AppComponent;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.adapter.VPCommonAdapter;
 import com.zjw.wanandroid_mvp.base.BaseFragment;
@@ -27,6 +30,9 @@ import com.zjw.wanandroid_mvp.di.module.publics.PublicTreeModule;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.presenter.publics.PublicTreePresenter;
 import com.zjw.wanandroid_mvp.utils.CacheUtil;
+import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.callback.ErrorCallback;
+import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -34,6 +40,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import me.yokeyword.fragmentation.SupportFragment;
 
 public class PublicFragment extends BaseFragment<PublicTreePresenter> implements PublicTreeContract.IPublicTreeView {
 
@@ -42,11 +49,12 @@ public class PublicFragment extends BaseFragment<PublicTreePresenter> implements
     @BindView(R.id.viewPager)
     ViewPager viewPager;
 
-    private ArrayList<Fragment> mFragmentSparseArray = new ArrayList<>();
-
-    private List<TreeBean> publicTagList = new ArrayList<>();
+    private List<SupportFragment> mFragmentSparseArray = new ArrayList<>();
 
     private List<String> tagNameList = new ArrayList<>();
+
+    private VPCommonAdapter vpCommonAdapter;
+    private LoadService loadService;
 
     @Override
     public void setupFragmentComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -60,62 +68,54 @@ public class PublicFragment extends BaseFragment<PublicTreePresenter> implements
 
     @Override
     public View initView(@NonNull @NotNull LayoutInflater inflater, @Nullable @org.jetbrains.annotations.Nullable ViewGroup container, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_public, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_public, container, false);
+        loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.viewPager), new Callback.OnReloadListener() {
+            @Override
+            public void onReload(View v) {
+                loadService.showCallback(LoadingCallback.class);
+                mPresenter.getPublicCategory();
+            }
+        });
+
+        Utils.setLoadingColor(loadService);
+        return rootView;
     }
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-       // publicTagList = CacheUtil.getPublicTagCache();
-
-        viewPager.setOffscreenPageLimit(2);
-
-//        if (publicTagList != null) {
-//            for (TreeBean data : publicTagList) {
-//                tagNameList.add(data.getName());
-//                tabLayout.addTab(tabLayout.newTab().setText(data.getName()));
-//            }
-//            viewPager.setAdapter(new VPCommonAdapter(getChildFragmentManager(), mFragmentSparseArray, tagNameList));
-//        } else {
-//            mPresenter.getPublicCategory();
-//        }
-
+        vpCommonAdapter = new VPCommonAdapter(getChildFragmentManager(), mFragmentSparseArray, tagNameList);
         mPresenter.getPublicCategory();
+    }
 
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        vpCommonAdapter.notifyDataSetChanged();
+        viewPager.setAdapter(vpCommonAdapter);
         tabLayout.setupWithViewPager(viewPager);
-
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition(), false);
-            }
-        });
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void showPublicCategory(List<TreeBean> bean) {
-        bean.forEach(data -> {
-            tagNameList.add(data.getName());
-            tabLayout.addTab(tabLayout.newTab().setText(data.getName()));
-            PublicListFragment publicListFragment = new PublicListFragment(data.getId());
-            mFragmentSparseArray.add(publicListFragment);
-        });
+        if (bean.size() == 0) {
+            loadService.showCallback(ErrorCallback.class);
+        } else {
+            loadService.showSuccess();
+            if (mFragmentSparseArray.size() == 0) {
+                bean.forEach(data -> {
+                    mFragmentSparseArray.add(new PublicListFragment(data.getId()));
+                });
+            }
+            if (tagNameList.size() == 0) {
+                bean.forEach(data -> {
+                    tagNameList.add(data.getName());
+                    tabLayout.addTab(tabLayout.newTab().setText(data.getName()));
+                });
+            }
+            vpCommonAdapter.notifyDataSetChanged();
 
-        viewPager.setAdapter(new VPCommonAdapter(getChildFragmentManager(), mFragmentSparseArray, tagNameList));
-    }
-
-    @Override
-    public boolean useEventBus() {
-        return false;
+            viewPager.setOffscreenPageLimit(mFragmentSparseArray.size());
+        }
     }
 }

@@ -57,9 +57,6 @@ public class QuestionActivity extends BaseActivity<QuestionPresenter> implements
     private ArticleAdapter questionAdapter;
     private LoadService loadService;
 
-    ImageView mCollection;
-    private boolean isLogin;
-
     @Override
     public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
         DaggerQuestionComponent.builder()
@@ -81,11 +78,13 @@ public class QuestionActivity extends BaseActivity<QuestionPresenter> implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         loadService = LoadSir.getDefault().register(refreshLayout, (Callback.OnReloadListener) v -> {
-            Utils.setLoadingColor(loadService);
             loadService.showCallback(LoadingCallback.class);
             currentPage = initPage;
             mPresenter.getQuestionList(currentPage);
         });
+
+        Utils.setLoadingColor(loadService);
+        loadService.showCallback(LoadingCallback.class);
 
         initAdapter();
 
@@ -110,6 +109,7 @@ public class QuestionActivity extends BaseActivity<QuestionPresenter> implements
         mPresenter.getQuestionList(currentPage);
 
     }
+
 
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -143,6 +143,7 @@ public class QuestionActivity extends BaseActivity<QuestionPresenter> implements
 
     @Override
     public void showQuestionList(BasePageBean<List<ArticleBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {

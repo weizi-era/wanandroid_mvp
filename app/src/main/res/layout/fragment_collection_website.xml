@@ -6,7 +6,7 @@
     android:orientation="vertical"
     tools:context=".ui.main.collect.CollectArticleFragment">
 
-    <include layout="@layout/include_recyclerview"/>
+    <include layout="@layout/fragment_list"/>
 
 </LinearLayout>
 

@@ -39,7 +39,7 @@ public class RankListPresenter extends BasePresenter<RankListContract.IRankListM
                 .subscribe(new Observer<BaseBean<BasePageBean<List<RankListBean>>>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -58,7 +58,7 @@ public class RankListPresenter extends BasePresenter<RankListContract.IRankListM
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

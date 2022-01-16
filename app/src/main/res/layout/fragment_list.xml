@@ -16,16 +16,13 @@
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatbtn"
+        android:id="@+id/floating_action_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:layout_marginRight="12dp"
-        android:layout_marginBottom="20dp"
-        android:scaleType="center"
-        android:visibility="invisible"
+        android:layout_margin="10dp"
         app:elevation="5dp"
-        app:srcCompat="@drawable/ic_arrow_upward_white_24dp"
-        app:layout_behavior=".widget.ScaleDownShowBehavior"/>
+        app:layout_behavior=".widget.ScaleDownShowBehavior"
+        app:srcCompat="@drawable/ic_arrow_upward_white_24dp" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

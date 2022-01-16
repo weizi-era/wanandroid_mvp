@@ -1,5 +1,6 @@
 package com.zjw.wanandroid_mvp.ui.project;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,12 +9,15 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.jess.arms.di.component.AppComponent;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -28,6 +32,7 @@ import com.zjw.wanandroid_mvp.di.component.project.DaggerProjectListComponent;
 import com.zjw.wanandroid_mvp.di.module.project.ProjectListModule;
 import com.zjw.wanandroid_mvp.event.CollectEvent;
 import com.zjw.wanandroid_mvp.contract.project.ProjectListContract;
+import com.zjw.wanandroid_mvp.event.LoginEvent;
 import com.zjw.wanandroid_mvp.presenter.project.ProjectListPresenter;
 import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
 import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
@@ -35,6 +40,7 @@ import com.zjw.wanandroid_mvp.utils.Utils;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
+import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
@@ -46,6 +52,8 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
     SwipeRefreshLayout refreshLayout;
     @BindView(R.id.swipeRecyclerview)
     SwipeRecyclerView recyclerView;
+    @BindView(R.id.floating_action_btn)
+    FloatingActionButton floatingActionButton;
 
     private int id;
 
@@ -53,8 +61,6 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
     private int currentPage = initPage;
 
     private ArticleAdapter mAdapter;
-
-    private boolean isLogin;
 
     private LoadService loadService;
 
@@ -76,11 +82,12 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
     public View initView(@NonNull @NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_project_list, container, false);
         loadService = LoadSir.getDefault().register(rootView.findViewById(R.id.swipeRefreshLayout), (Callback.OnReloadListener) v -> {
-            Utils.setLoadingColor(loadService);
             loadService.showCallback(LoadingCallback.class);
             currentPage = initPage;
             mPresenter.getProjectList(currentPage, id);
         });
+
+        Utils.setLoadingColor(loadService);
 
         return rootView;
     }
@@ -99,6 +106,13 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
             }
         });
 
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                scrollToTop();
+            }
+        });
+
         //初始化recyclerview
         RecyclerUtil.initRecyclerView(_mActivity, recyclerView, new SwipeRecyclerView.LoadMoreListener() {
             @Override
@@ -107,11 +121,20 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
             }
         });
 
-        mPresenter.getProjectList(currentPage, id);
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (!recyclerView.canScrollVertically(-1)) {
+                    floatingActionButton.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     @Override
     public void showProjectList(BasePageBean<List<ArticleBean>> bean) {
+        refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
         } else if (currentPage == initPage) {
@@ -134,6 +157,23 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
                 }
             }, 200);
         }
+    }
+
+    public void scrollToTop() {
+        LinearLayoutManager layoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+        if (layoutManager.findFirstVisibleItemPosition() >= 40) {
+            recyclerView.scrollToPosition(0);
+        } else {
+            recyclerView.smoothScrollToPosition(0);
+        }
+    }
+
+    @Override
+    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
+        super.onLazyInitView(savedInstanceState);
+        loadService.showCallback(LoadingCallback.class);
+        recyclerView.setAdapter(mAdapter);
+        mPresenter.getProjectList(currentPage, id);
     }
 
     @Override
@@ -171,9 +211,25 @@ public class ProjectListFragment extends BaseFragment<ProjectListPresenter> impl
         });
     }
 
-//    @Override
-//    public boolean useEventBus() {
-//        return true;
-//    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Subscribe
+    public void freshLogin(@NonNull LoginEvent event) {
+        List<ArticleBean> data = mAdapter.getData();
+        if (event.isLogin()) {
+            event.getCollectIds().forEach(item -> {
+                for (ArticleBean item1 : data) {
+                    if (item1.getId() == Integer.parseInt(String.valueOf(item))) {
+                        item1.setCollect(true);
+                        break;
+                    }
+                }
+            });
+        } else {
+            for (ArticleBean item1 : data) {
+                item1.setCollect(false);
+            }
+        }
+        mAdapter.notifyDataSetChanged();
+    }
 
 }

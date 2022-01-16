@@ -31,5 +31,4 @@ public class CollectWebsiteModule {
     public final CollectWebsiteContract.ICollectWebsiteModel provideCollectWebsiteModel(CollectWebsiteModel model) {
         return model;
     }
-
 }
