@@ -1,8 +1,8 @@
 package com.zjw.wanandroid_mvp.presenter.home.search;
 
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.utils.RxLifecycleUtils;
+import com.zjw.wanandroid_mvp.base.BasePresenter;
+import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.zjw.wanandroid_mvp.bean.ArticleBean;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;

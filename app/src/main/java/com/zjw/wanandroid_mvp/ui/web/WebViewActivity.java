@@ -10,14 +10,20 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 
+import com.jess.arms.di.component.AppComponent;
+import com.jess.arms.mvp.IPresenter;
 import com.just.agentweb.AgentWeb;
 import com.zjw.wanandroid_mvp.R;
+import com.zjw.wanandroid_mvp.base.BaseActivity;
 import com.zjw.wanandroid_mvp.utils.Utils;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Method;
 
@@ -25,7 +31,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class WebViewActivity extends AppCompatActivity {
+public class WebViewActivity extends BaseActivity<IPresenter> {
 
     @BindView(R.id.web_toolbar)
     Toolbar web_toolbar;
@@ -34,26 +40,27 @@ public class WebViewActivity extends AppCompatActivity {
     @BindView(R.id.webTitle)
     TextView webTitle;
 
-    private AgentWeb mAgentWeb;
     private String mTitle;
     private String mUrl;
-    private Context mContext;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_webview);
+    public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
 
-        ButterKnife.bind(this);
-
-        init();
     }
 
-    private void init() {
-        mContext = getApplicationContext();
-        getIntentInfo();
+    @Override
+    public int initView(@Nullable Bundle savedInstanceState) {
+        return R.layout.activity_webview;
+    }
+
+    @Override
+    public void initData(@Nullable Bundle savedInstanceState) {
+        Intent intent = getIntent();
+        mTitle = intent.getStringExtra("title");
+        mUrl = intent.getStringExtra("url");
+
         initToolbar(mTitle);
-        mAgentWeb = AgentWeb.with(this)
+        AgentWeb.with(this)
                 .setAgentWebParent(web_content, new LinearLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .createAgentWeb()
@@ -62,8 +69,8 @@ public class WebViewActivity extends AppCompatActivity {
     }
 
     private void initToolbar(String title) {
-        getWindow().setStatusBarColor(Utils.getColor(mContext));
-        web_toolbar.setBackgroundColor(Utils.getColor(mContext));
+        getWindow().setStatusBarColor(Utils.getColor(this));
+        web_toolbar.setBackgroundColor(Utils.getColor(this));
         setSupportActionBar(web_toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setHomeAsUpIndicator(R.mipmap.whiteback_icon);
@@ -78,12 +85,6 @@ public class WebViewActivity extends AppCompatActivity {
         }
     }
 
-
-    private void getIntentInfo() {
-        Intent intent = getIntent();
-        mTitle = intent.getStringExtra("title");
-        mUrl = intent.getStringExtra("url");
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -139,5 +140,6 @@ public class WebViewActivity extends AppCompatActivity {
         }
         return super.onMenuOpened(featureId, menu);
     }
+
 
 }

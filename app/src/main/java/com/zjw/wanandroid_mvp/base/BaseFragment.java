@@ -31,7 +31,6 @@ import com.jess.arms.integration.cache.Cache;
 import com.jess.arms.integration.cache.CacheType;
 import com.jess.arms.integration.lifecycle.FragmentLifecycleable;
 import com.jess.arms.mvp.IPresenter;
-import com.jess.arms.mvp.IView;
 import com.jess.arms.utils.ArmsUtils;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zjw.wanandroid_mvp.utils.DialogUtil;
@@ -113,8 +112,8 @@ public abstract class BaseFragment<P extends IPresenter> extends SupportFragment
     }
 
     @Override
-    public void showLoading() {
-        DialogUtil.showLoading(_mActivity);
+    public void showLoading(String info) {
+        DialogUtil.showLoading(_mActivity, info);
     }
 
     @Override

@@ -2,12 +2,10 @@ package com.zjw.wanandroid_mvp.presenter.system;
 
 
 import com.jess.arms.di.scope.FragmentScope;
-import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.utils.RxLifecycleUtils;
-import com.trello.rxlifecycle2.android.FragmentEvent;
+import com.zjw.wanandroid_mvp.base.BasePresenter;
+import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.SystemBean;
-import com.zjw.wanandroid_mvp.bean.TreeBean;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.contract.system.SystemContract;
 import com.zjw.wanandroid_mvp.utils.HttpUtils;

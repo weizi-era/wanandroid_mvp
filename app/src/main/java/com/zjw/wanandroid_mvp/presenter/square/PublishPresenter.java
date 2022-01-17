@@ -1,8 +1,8 @@
 package com.zjw.wanandroid_mvp.presenter.square;
 
 import com.jess.arms.di.scope.ActivityScope;
-import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.utils.RxLifecycleUtils;
+import com.zjw.wanandroid_mvp.base.BasePresenter;
+import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
@@ -35,7 +35,7 @@ public class PublishPresenter extends BasePresenter<PublishContract.IPublishMode
                 .subscribe(new Observer<BaseBean<Object>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+                        mRootView.showLoading("正在发布中...");
                     }
 
                     @Override

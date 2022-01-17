@@ -19,7 +19,6 @@ import com.jess.arms.integration.cache.Cache;
 import com.jess.arms.integration.cache.CacheType;
 import com.jess.arms.integration.lifecycle.ActivityLifecycleable;
 import com.jess.arms.mvp.IPresenter;
-import com.jess.arms.mvp.IView;
 import com.jess.arms.utils.ArmsUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zjw.wanandroid_mvp.R;
@@ -115,8 +114,8 @@ public abstract class BaseActivity<P extends IPresenter> extends SupportActivity
 
 
     @Override
-    public void showLoading() {
-        DialogUtil.showLoading(this);
+    public void showLoading(String info) {
+        DialogUtil.showLoading(this, info);
     }
 
     @Override

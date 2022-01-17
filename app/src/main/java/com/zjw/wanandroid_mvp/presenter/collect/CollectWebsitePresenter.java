@@ -1,8 +1,8 @@
 package com.zjw.wanandroid_mvp.presenter.collect;
 
 import com.jess.arms.di.scope.FragmentScope;
-import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.utils.RxLifecycleUtils;
+import com.zjw.wanandroid_mvp.base.BasePresenter;
+import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.WebsiteBean;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
@@ -70,7 +70,7 @@ public class CollectWebsitePresenter extends BasePresenter<CollectWebsiteContrac
                 .subscribe(new Observer<BaseBean<Object>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
-                        mRootView.showLoading();
+
                     }
 
                     @Override
@@ -89,7 +89,7 @@ public class CollectWebsitePresenter extends BasePresenter<CollectWebsiteContrac
 
                     @Override
                     public void onComplete() {
-                        mRootView.hideLoading();
+
                     }
                 });
     }

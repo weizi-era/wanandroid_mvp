@@ -1,14 +1,16 @@
 package com.zjw.wanandroid_mvp.presenter.collect;
 
 import com.jess.arms.di.scope.FragmentScope;
-import com.jess.arms.mvp.BasePresenter;
-import com.jess.arms.utils.RxLifecycleUtils;
+
+import com.zjw.wanandroid_mvp.base.BasePresenter;
+import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.zjw.wanandroid_mvp.bean.ArticleBean;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.contract.collect.CollectArticleContract;
 import com.zjw.wanandroid_mvp.utils.HttpUtils;
+
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +26,7 @@ import io.reactivex.schedulers.Schedulers;
 import me.jessyan.rxerrorhandler.handler.RetryWithDelay;
 
 @FragmentScope
-public class CollectArticlePresenter extends BasePresenter<CollectArticleContract.ICollectArticleModel, CollectArticleContract.ICollectArticleView>  {
+public class CollectArticlePresenter extends BasePresenter<CollectArticleContract.ICollectArticleModel, CollectArticleContract.ICollectArticleView> {
 
     @Inject
     public CollectArticlePresenter(CollectArticleContract.ICollectArticleModel model, CollectArticleContract.ICollectArticleView rootView) {

@@ -72,6 +72,12 @@ public class Constant {
 
     public static final String SEARCH_RESULT = "article/query/{page}/json";
 
+    public static final String TODO_LIST = "lg/todo/v2/list/{page}/json";
+
+    public static final String DELETE_TODO = "lg/todo/delete/{id}/json";
+
+    public static final String ADD_TODO = "lg/todo/add/json";
+
     /**
      * 获取成功
      */

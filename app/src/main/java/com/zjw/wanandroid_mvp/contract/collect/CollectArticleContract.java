@@ -1,7 +1,8 @@
 package com.zjw.wanandroid_mvp.contract.collect;
 
 import com.jess.arms.mvp.IModel;
-import com.jess.arms.mvp.IView;
+
+import com.zjw.wanandroid_mvp.base.IView;
 import com.zjw.wanandroid_mvp.bean.ArticleBean;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;
