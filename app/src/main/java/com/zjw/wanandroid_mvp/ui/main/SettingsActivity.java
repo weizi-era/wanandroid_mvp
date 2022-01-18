@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -34,6 +35,8 @@ public class SettingsActivity extends BaseActivity<IPresenter> {
     LinearLayout ll_web;
     @BindView(R.id.ll_sourceCode)
     LinearLayout ll_sourceCode;
+    @BindView(R.id.ll_download)
+    LinearLayout ll_download;
 
     @Override
     public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -77,6 +80,13 @@ public class SettingsActivity extends BaseActivity<IPresenter> {
             @Override
             public void onClick(View v) {
                 JumpWebUtils.startWebActivity(SettingsActivity.this, "伟子时代的github", "https://github.com/weizi-era/wanandroid_mvp");
+            }
+        });
+
+        ll_download.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SettingsActivity.this, DownLoadActivity.class));
             }
         });
     }

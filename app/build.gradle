@@ -18,9 +18,24 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG",  "true"
+            buildConfigField "boolean", "USE_CANARY", "true"
+            buildConfigField "String", "BUGLY_KEY", '"xxxxxx"'
             minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources false
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        release {
+            buildConfigField "boolean", "LOG_DEBUG",  "false"
+            buildConfigField "boolean", "USE_CANARY", "false"
+            buildConfigField "String", "BUGLY_KEY", '"5a5f6366fc"'//bugly key
+            minifyEnabled true//开启混淆
+            shrinkResources true
+            zipAlignEnabled true//去除无用资源
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {

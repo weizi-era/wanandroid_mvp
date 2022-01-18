@@ -157,6 +157,30 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/ll_download"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:foreground="?attr/selectableItemBackground"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="扫码下载"
+                    android:textSize="16sp"
+                    android:textColor="@color/Grey900"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/Grey600"
+                    android:textSize="15sp"
+                    android:text="好用的话推荐给你的小伙伴吧~" />
+
+            </LinearLayout>
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

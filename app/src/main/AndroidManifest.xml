@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.main.todo.AddTodoActivity"></activity>
+        <activity android:name=".ui.main.DownLoadActivity"></activity>
+        <activity android:name=".ui.main.todo.AddTodoActivity" />
         <activity android:name=".ui.main.AuthorInfoActivity" />
         <activity android:name=".ui.home.SearchResultActivity" />
         <activity android:name=".ui.home.SearchActivity" />

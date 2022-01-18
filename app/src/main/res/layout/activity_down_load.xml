@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.main.DownLoadActivity">
+
+    <include layout="@layout/toolbar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="好用的话推荐给你的小伙伴吧"
+        android:textSize="16sp"
+        android:textColor="@color/Grey900"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="(建议使用浏览器扫描二维码下载(●'◡'●))"
+        android:textSize="16sp"
+        android:textColor="@color/Grey900"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="center"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:src="@drawable/download_code"/>
+
+</LinearLayout>

@@ -12,7 +12,7 @@ ext {
     version = [
             dagger2SdkVersion: "2.40.5",
             butterknifeSdkVersion: "10.2.1",
-            canarySdkVersion : "2.7"
+            canarySdkVersion : "1.6.3"
     ]
 
     dependencies = [
