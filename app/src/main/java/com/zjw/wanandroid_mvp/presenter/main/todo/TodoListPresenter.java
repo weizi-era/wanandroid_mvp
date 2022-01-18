@@ -6,7 +6,7 @@ import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;
-import com.zjw.wanandroid_mvp.bean.TodoListBean;
+import com.zjw.wanandroid_mvp.bean.TodoBean;
 import com.zjw.wanandroid_mvp.contract.todo.TodoListContract;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.utils.HttpUtils;
@@ -36,14 +36,14 @@ public class TodoListPresenter extends BasePresenter<TodoListContract.ITodoListM
                 .retryWhen(new RetryWithDelay(1, 0))
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(RxLifecycleUtils.bindUntilEvent(mRootView, ActivityEvent.DESTROY))
-                .subscribe(new Observer<BaseBean<BasePageBean<List<TodoListBean>>>>() {
+                .subscribe(new Observer<BaseBean<BasePageBean<List<TodoBean>>>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
 
                     }
 
                     @Override
-                    public void onNext(@NotNull BaseBean<BasePageBean<List<TodoListBean>>> bean) {
+                    public void onNext(@NotNull BaseBean<BasePageBean<List<TodoBean>>> bean) {
                         if (bean.getErrorCode() == Constant.SUCCESS) {
                             mRootView.showTodoList(bean.getData());
                         } else {
@@ -78,6 +78,38 @@ public class TodoListPresenter extends BasePresenter<TodoListContract.ITodoListM
                     public void onNext(@NotNull BaseBean<Object> bean) {
                         if (bean.getErrorCode() == Constant.SUCCESS) {
                             mRootView.deleteTodo(position);
+                        } else {
+                            mRootView.showMessage(bean.getErrorMsg());
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NotNull Throwable e) {
+                        mRootView.showMessage(HttpUtils.INSTANCE.getErrorText(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    public void completeTodo(int id, int status, int position) {
+        mModel.completeTodo(id, status).subscribeOn(Schedulers.io())
+                .retryWhen(new RetryWithDelay(1, 0))
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(RxLifecycleUtils.bindUntilEvent(mRootView, ActivityEvent.DESTROY))
+                .subscribe(new Observer<BaseBean<TodoBean>>() {
+                    @Override
+                    public void onSubscribe(@NotNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NotNull BaseBean<TodoBean> bean) {
+                        if (bean.getErrorCode() == Constant.SUCCESS) {
+                            mRootView.completeTodo(position, bean.getData());
                         } else {
                             mRootView.showMessage(bean.getErrorMsg());
                         }

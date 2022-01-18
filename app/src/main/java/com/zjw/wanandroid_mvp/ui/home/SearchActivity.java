@@ -41,6 +41,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
@@ -60,7 +61,7 @@ public class SearchActivity extends BaseActivity<HotSearchPresenter> implements 
 
     private HistorySearchAdapter mHistorySearchAdapter;
 
-    private List<String> historyList = new ArrayList<>();
+    private List<String> historyList;
     private List<HotSearchBean> hotList = new ArrayList<>();
 
 
@@ -84,6 +85,15 @@ public class SearchActivity extends BaseActivity<HotSearchPresenter> implements 
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_back);
 
+        initAdapter();
+
+        historyList = CacheUtil.getHistorySearchCache();
+        if (historyList.size() != 0) {
+            mHistorySearchAdapter.setList(historyList);
+        } else {
+            empty_history.setVisibility(View.VISIBLE);
+        }
+
         clearAll.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,14 +106,14 @@ public class SearchActivity extends BaseActivity<HotSearchPresenter> implements 
             }
         });
 
-        initAdapter();
-
         tagFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
                 HotSearchBean data = hotList.get(position);
                 if (!historyList.contains(data.getName())) {
                     historyList.add(0, data.getName());
+                } else {
+                    Collections.swap(historyList, historyList.indexOf(data.getName()), 0);
                 }
 
                 CacheUtil.setHistorySearchCache(new Gson().toJson(historyList));

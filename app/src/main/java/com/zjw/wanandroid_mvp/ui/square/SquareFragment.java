@@ -48,6 +48,7 @@ import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
 import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.ToastUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.CollectView;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
@@ -214,12 +215,14 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
             @Override
             public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
                 ArticleBean bean = (ArticleBean) adapter.getItem(position);
-                ImageView mCollection = view.findViewById(R.id.iv_collection);
-                if (bean.isCollect()) {
+                CollectView mCollection = view.findViewById(R.id.iv_collection);
+                if (mCollection.isChecked()) {
                     mCollection.setImageResource(R.mipmap.star_default);
+                    mCollection.setChecked(false);
                     mPresenter.unCollect(bean.getId(), position);
                 } else {
                     mCollection.setImageResource(R.mipmap.star_collected);
+                    mCollection.setChecked(true);
                     mPresenter.collect(bean.getId(), position);
                 }
             }
@@ -267,5 +270,21 @@ public class SquareFragment extends BaseFragment<SquarePresenter> implements Squ
             }
         }
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Subscribe
+    public void collectEvent(CollectEvent event) {
+        List<ArticleBean> data = mAdapter.getData();
+        if (!event.isCollect()) {
+
+            for (int i = 0; i < data.size(); i++) {
+                if (data.get(i).getId() == event.getId()) {
+                    data.get(i).setCollect(false);
+                    break;
+                }
+            }
+
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

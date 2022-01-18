@@ -147,7 +147,10 @@ public class CacheUtil {
         MMKV mmkv = MMKV.mmkvWithID("cache");
         String historySearch = mmkv.decodeString("history");
         Type type = new TypeToken<List<String>>() {}.getType();
-        return new Gson().fromJson(historySearch, type);
+        if (!TextUtils.isEmpty(historySearch)) {
+            return new Gson().fromJson(historySearch, type);
+        }
+        return new ArrayList<>();
     }
 
     /**

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.jess.arms.di.component.AppComponent;
+import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.callback.SuccessCallback;
+import com.kingja.loadsir.core.LoadService;
+import com.kingja.loadsir.core.LoadSir;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.adapter.NaviAdapter;
 import com.zjw.wanandroid_mvp.base.BaseFragment;
@@ -24,6 +29,7 @@ import com.zjw.wanandroid_mvp.di.component.system.DaggerNaviComponent;
 import com.zjw.wanandroid_mvp.di.module.system.NaviModule;
 import com.zjw.wanandroid_mvp.presenter.system.NaviListPresenter;
 import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.callback.ErrorCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -43,9 +49,11 @@ public class NaviListFragment extends BaseFragment<NaviListPresenter> implements
     @BindView(R.id.recyclerview)
     RecyclerView recyclerView;
 
+
     private NaviAdapter naviAdapter;
 
     private LinearLayoutManager mLinearLayoutManager;
+
 
 
     @Override
@@ -61,6 +69,7 @@ public class NaviListFragment extends BaseFragment<NaviListPresenter> implements
     public View initView(@NonNull @NotNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_navi_list, container, false);
     }
+
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {

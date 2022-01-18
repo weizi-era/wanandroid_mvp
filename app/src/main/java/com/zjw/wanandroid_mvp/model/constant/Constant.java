@@ -78,6 +78,10 @@ public class Constant {
 
     public static final String ADD_TODO = "lg/todo/add/json";
 
+    public static final String UPDATE_TODO = "lg/todo/update/{id}/json";
+
+    public static final String COMPLETE_TODO = "lg/todo/done/{id}/json";
+
     /**
      * 获取成功
      */

@@ -197,7 +197,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                         }
                         break;
                     case R.id.iv_collection:
-                        Log.d(TAG, "onItemChildClick: " + mCollection.isChecked());
                         if (mCollection.isChecked()) {
                             mCollection.setImageResource(R.mipmap.star_default);
                             mCollection.setChecked(false);

@@ -13,6 +13,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +29,7 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.mvp.IPresenter;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.base.BaseActivity;
+import com.zjw.wanandroid_mvp.bean.TodoBean;
 import com.zjw.wanandroid_mvp.contract.todo.AddTodoContract;
 import com.zjw.wanandroid_mvp.di.component.main.todo.DaggerAddTodoComponent;
 import com.zjw.wanandroid_mvp.di.module.main.todo.AddTodoModule;
@@ -68,6 +70,7 @@ public class AddTodoActivity extends BaseActivity<AddTodoPresenter> implements A
 
     private int typeTag;
     private int priorityTag;
+    private Intent intent;
 
     @Override
     public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -85,22 +88,19 @@ public class AddTodoActivity extends BaseActivity<AddTodoPresenter> implements A
 
     @Override
     public void initData(@Nullable Bundle savedInstanceState) {
-        Intent intent = getIntent();
-        if (intent != null) {
-            String title = intent.getStringExtra("title");
-            String content = intent.getStringExtra("content");
-            String date = intent.getStringExtra("date");
-            typeTag = intent.getIntExtra("type", 0);
-            priorityTag = intent.getIntExtra("priority", 0);
-
-            todo_title.setText(title);
-            todo_content.setText(content);
-            complete_date.setText(date);
-            todo_type.setText(getType(typeTag));
-            todo_priority.setText(getPriority(priorityTag));
+        intent = getIntent();
+        TodoBean bean = (TodoBean) intent.getSerializableExtra("data");
+        if (bean != null) {
+            toolbar.setTitle("修改待办");
+            todo_title.setText(bean.getTitle());
+            todo_content.setText(bean.getContent());
+            complete_date.setText(bean.getDateStr());
+            todo_type.setText(getType(bean.getType()));
+            todo_priority.setText(getPriority(bean.getPriority()));
+        } else {
+            toolbar.setTitle("添加待办");
         }
 
-        toolbar.setTitle("添加待办");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -212,8 +212,13 @@ public class AddTodoActivity extends BaseActivity<AddTodoPresenter> implements A
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPresenter.addTodo(todo_title.getText().toString(), todo_content.getText().toString(), complete_date.getText().toString(),
-                        typeTag, priorityTag);
+                if (bean != null) {
+                    mPresenter.updateTodo(bean.getId(), todo_title.getText().toString(), todo_content.getText().toString(), complete_date.getText().toString(),
+                            typeTag == 0 ? bean.getType() : typeTag, priorityTag == 0 ? bean.getPriority() : priorityTag);
+                } else {
+                    mPresenter.addTodo(todo_title.getText().toString(), todo_content.getText().toString(), complete_date.getText().toString(),
+                            typeTag, priorityTag);
+                }
             }
         });
     }
@@ -247,6 +252,12 @@ public class AddTodoActivity extends BaseActivity<AddTodoPresenter> implements A
 
     @Override
     public void addTodo() {
+        new AddEvent(Constant.TODO_CODE).post();
+        finish();
+    }
+
+    @Override
+    public void updateTodo() {
         new AddEvent(Constant.TODO_CODE).post();
         finish();
     }

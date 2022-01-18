@@ -37,6 +37,7 @@ import com.zjw.wanandroid_mvp.ui.main.share.OtherSharedActivity;
 import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
 import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.CollectView;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
@@ -138,6 +139,7 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
             @Override
             public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
                 ArticleBean bean = (ArticleBean) adapter.getItem(position);
+                CollectView mCollection = view.findViewById(R.id.iv_collection);
                 switch (view.getId()) {
                     case R.id.author_name:
                         if (TextUtils.isEmpty(bean.getAuthor())) {
@@ -151,9 +153,13 @@ public class SearchResultActivity extends BaseActivity<SearchResultPresenter> im
                         }
                         break;
                     case R.id.iv_collection:
-                        if (bean.isCollect()) {
+                        if (mCollection.isChecked()) {
+                            mCollection.setImageResource(R.mipmap.star_default);
+                            mCollection.setChecked(false);
                             mPresenter.unCollect(bean.getId(), position);
                         } else {
+                            mCollection.setImageResource(R.mipmap.star_collected);
+                            mCollection.setChecked(true);
                             mPresenter.collect(bean.getId(), position);
                         }
                 }

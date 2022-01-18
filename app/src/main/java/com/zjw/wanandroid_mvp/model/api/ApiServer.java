@@ -10,7 +10,7 @@ import com.zjw.wanandroid_mvp.bean.HotSearchBean;
 import com.zjw.wanandroid_mvp.bean.NaviBean;
 import com.zjw.wanandroid_mvp.bean.SharedBean;
 import com.zjw.wanandroid_mvp.bean.SystemBean;
-import com.zjw.wanandroid_mvp.bean.TodoListBean;
+import com.zjw.wanandroid_mvp.bean.TodoBean;
 import com.zjw.wanandroid_mvp.bean.TreeBean;
 import com.zjw.wanandroid_mvp.bean.RankListBean;
 import com.zjw.wanandroid_mvp.bean.ScoreListBean;
@@ -120,12 +120,17 @@ public interface ApiServer {
     Observable<BaseBean<BasePageBean<List<ArticleBean>>>> getSearchResultList(@Path("page") int page, @Query("k") String key);
 
     @GET(Constant.TODO_LIST)
-    Observable<BaseBean<BasePageBean<List<TodoListBean>>>> getTodoList(@Path("page") int page);
+    Observable<BaseBean<BasePageBean<List<TodoBean>>>> getTodoList(@Path("page") int page);
 
     @POST(Constant.DELETE_TODO)
     Observable<BaseBean<Object>> deleteTodo(@Path("id") int id);
 
     @POST(Constant.ADD_TODO)
-    Observable<BaseBean<TodoListBean>> addTodo(@Query("title") String title, @Query("content") String content,
-                                         @Query("date") String date, @Query("type") int type, @Query("priority") int priority);
+    Observable<BaseBean<TodoBean>> addTodo(@Query("title") String title, @Query("content") String content,
+                                           @Query("date") String date, @Query("type") int type, @Query("priority") int priority);
+    @POST(Constant.UPDATE_TODO)
+    Observable<BaseBean<TodoBean>> updateTodo(@Path("id") int id, @Query("title") String title, @Query("content") String content,
+                                              @Query("date") String date, @Query("type") int type, @Query("priority") int priority);
+    @POST(Constant.COMPLETE_TODO)
+    Observable<BaseBean<TodoBean>> completeTodo(@Path("id") int id, @Query("status") int status);
 }

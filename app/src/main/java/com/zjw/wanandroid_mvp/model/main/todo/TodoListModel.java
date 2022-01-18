@@ -5,7 +5,7 @@ import com.jess.arms.integration.IRepositoryManager;
 import com.jess.arms.mvp.BaseModel;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;
-import com.zjw.wanandroid_mvp.bean.TodoListBean;
+import com.zjw.wanandroid_mvp.bean.TodoBean;
 import com.zjw.wanandroid_mvp.contract.todo.TodoListContract;
 import com.zjw.wanandroid_mvp.model.api.ApiServer;
 
@@ -24,12 +24,17 @@ public class TodoListModel extends BaseModel implements TodoListContract.ITodoLi
     }
 
     @Override
-    public Observable<BaseBean<BasePageBean<List<TodoListBean>>>> getTodoList(int page) {
+    public Observable<BaseBean<BasePageBean<List<TodoBean>>>> getTodoList(int page) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).getTodoList(page);
     }
 
     @Override
     public Observable<BaseBean<Object>> deleteTodo(int id) {
         return mRepositoryManager.obtainRetrofitService(ApiServer.class).deleteTodo(id);
+    }
+
+    @Override
+    public Observable<BaseBean<TodoBean>> completeTodo(int id, int status) {
+        return mRepositoryManager.obtainRetrofitService(ApiServer.class).completeTodo(id, status);
     }
 }

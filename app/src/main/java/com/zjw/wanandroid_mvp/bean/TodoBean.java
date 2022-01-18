@@ -2,8 +2,10 @@ package com.zjw.wanandroid_mvp.bean;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class TodoListBean {
+
+public class TodoBean implements Serializable {
 
     @SerializedName("completeDate")
     private Object completeDate;

@@ -14,6 +14,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.jess.arms.di.component.AppComponent;
 import com.kingja.loadsir.callback.Callback;
+import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadService;
 import com.kingja.loadsir.core.LoadSir;
 import com.yanzhenjie.recyclerview.SwipeRecyclerView;
@@ -28,6 +29,7 @@ import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.contract.system.SystemContract;
 import com.zjw.wanandroid_mvp.presenter.system.SystemPresenter;
 import com.zjw.wanandroid_mvp.utils.Utils;
+import com.zjw.wanandroid_mvp.widget.callback.ErrorCallback;
 import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +83,12 @@ public class SystemListFragment extends BaseFragment<SystemPresenter> implements
 
     @Override
     public void showSystemList(List<SystemBean> bean) {
-        adapter.setList(bean);
+        if (bean.size() == 0) {
+            loadService.showCallback(ErrorCallback.class);
+        } else {
+            loadService.showCallback(SuccessCallback.class);
+            adapter.setList(bean);
+        }
     }
 
     private void initAdapter() {

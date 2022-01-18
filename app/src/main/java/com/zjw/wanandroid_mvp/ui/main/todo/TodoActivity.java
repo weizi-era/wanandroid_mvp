@@ -2,7 +2,6 @@ package com.zjw.wanandroid_mvp.ui.main.todo;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -16,9 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.ImageView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.listener.OnItemChildClickListener;
 import com.chad.library.adapter.base.listener.OnItemClickListener;
@@ -30,19 +27,14 @@ import com.yanzhenjie.recyclerview.SwipeRecyclerView;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.adapter.TodoAdapter;
 import com.zjw.wanandroid_mvp.base.BaseActivity;
-import com.zjw.wanandroid_mvp.bean.ArticleBean;
 import com.zjw.wanandroid_mvp.bean.BasePageBean;
-import com.zjw.wanandroid_mvp.bean.TodoListBean;
+import com.zjw.wanandroid_mvp.bean.TodoBean;
 import com.zjw.wanandroid_mvp.contract.todo.TodoListContract;
 import com.zjw.wanandroid_mvp.di.component.main.todo.DaggerTodoListComponent;
 import com.zjw.wanandroid_mvp.di.module.main.todo.TodoListModule;
 import com.zjw.wanandroid_mvp.event.AddEvent;
 import com.zjw.wanandroid_mvp.model.constant.Constant;
 import com.zjw.wanandroid_mvp.presenter.main.todo.TodoListPresenter;
-import com.zjw.wanandroid_mvp.ui.main.share.MySharedActivity;
-import com.zjw.wanandroid_mvp.ui.square.PublishActivity;
-import com.zjw.wanandroid_mvp.utils.DialogUtil;
-import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
 import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
@@ -92,21 +84,6 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        dialog = new Dialog(TodoActivity.this, R.style.DialogTheme);
-        //2、设置布局
-        View view = View.inflate(TodoActivity.this, R.layout.bottom_dialog_layout,null);
-        dialog.setContentView(view);
-
-        Window window = dialog.getWindow();
-        //设置弹出位置
-        window.setGravity(Gravity.BOTTOM);
-        //设置弹出动画
-        window.setWindowAnimations(R.style.main_menu_animStyle);
-        //设置对话框大小
-        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
-
-        initAdapter();
-
         loadService = LoadSir.getDefault().register(recyclerView, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
@@ -118,6 +95,8 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
 
         Utils.setLoadingColor(loadService);
         loadService.showCallback(LoadingCallback.class);
+
+        initAdapter();
 
         // 初始化refreshLayout
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -148,13 +127,11 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
-                TodoListBean bean = (TodoListBean) adapter.getItem(position);
+                TodoBean bean = (TodoBean) adapter.getItem(position);
                 Intent intent = new Intent(TodoActivity.this, AddTodoActivity.class);
-                intent.putExtra("title", bean.getTitle());
-                intent.putExtra("content", bean.getContent());
-                intent.putExtra("date", bean.getDateStr());
-                intent.putExtra("type", bean.getType());
-                intent.putExtra("priority", bean.getPriority());
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", bean);
+                intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
@@ -162,9 +139,9 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
         adapter.setOnItemChildClickListener(new OnItemChildClickListener() {
             @Override
             public void onItemChildClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
-                TodoListBean bean = (TodoListBean) adapter.getItem(position);
+                TodoBean bean = (TodoBean) adapter.getItem(position);
 
-                dialog.show();
+                buildDialog(bean);
 
                 dialog.findViewById(R.id.tv_cancel).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -181,13 +158,15 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
                     }
                 });
 
-                dialog.findViewById(R.id.complete_todo).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        //
-                        dialog.dismiss();
-                    }
-                });
+                if (bean.getStatus() != 1) {
+                    dialog.findViewById(R.id.complete_todo).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            mPresenter.completeTodo(bean.getId(), 1, position);
+                            dialog.dismiss();
+                        }
+                    });
+                }
             }
         });
     }
@@ -208,7 +187,7 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
         return super.onOptionsItemSelected(item);
     }
     @Override
-    public void showTodoList(BasePageBean<List<TodoListBean>> bean) {
+    public void showTodoList(BasePageBean<List<TodoBean>> bean) {
         refreshLayout.setRefreshing(false);
         if (currentPage == initPage && bean.getDatas().size() == 0) {
             loadService.showCallback(EmptyCallback.class);
@@ -244,6 +223,12 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
 
     }
 
+    @Override
+    public void completeTodo(int position, TodoBean bean) {
+        adapter.setData(position, bean);
+        adapter.notifyDataSetChanged();
+    }
+
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onAddTodoEvent(AddEvent event) {
         if (event.getCode() == Constant.TODO_CODE) {
@@ -251,5 +236,27 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
             adapter.setNewInstance(null);
             mPresenter.getTodoList(initPage);
         }
+    }
+
+    private void buildDialog(TodoBean bean) {
+        if (dialog == null) {
+            dialog = new Dialog(TodoActivity.this, R.style.DialogTheme);
+        }
+        //2、设置布局
+        View view = View.inflate(TodoActivity.this, R.layout.bottom_dialog_layout,null);
+        if (bean.getStatus() == 1) {
+            view.findViewById(R.id.complete_todo).setVisibility(View.GONE);
+        }
+        dialog.setContentView(view);
+
+        Window window = dialog.getWindow();
+        //设置弹出位置
+        window.setGravity(Gravity.BOTTOM);
+        //设置弹出动画
+        window.setWindowAnimations(R.style.main_menu_animStyle);
+        //设置对话框大小
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        dialog.show();
     }
 }
