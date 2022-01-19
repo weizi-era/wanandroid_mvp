@@ -8,6 +8,8 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -15,7 +17,9 @@ import com.jess.arms.di.component.AppComponent;
 import com.jess.arms.mvp.IPresenter;
 import com.zjw.wanandroid_mvp.R;
 import com.zjw.wanandroid_mvp.base.BaseActivity;
+import com.zjw.wanandroid_mvp.event.SettingEvent;
 import com.zjw.wanandroid_mvp.utils.CacheDataManager;
+import com.zjw.wanandroid_mvp.utils.CacheUtil;
 import com.zjw.wanandroid_mvp.utils.DialogUtil;
 import com.zjw.wanandroid_mvp.utils.JumpWebUtils;
 
@@ -37,6 +41,8 @@ public class SettingsActivity extends BaseActivity<IPresenter> {
     LinearLayout ll_sourceCode;
     @BindView(R.id.ll_download)
     LinearLayout ll_download;
+    @BindView(R.id.cb_top)
+    CheckBox cb_top;
 
     @Override
     public void setupActivityComponent(@NonNull @NotNull AppComponent appComponent) {
@@ -56,6 +62,8 @@ public class SettingsActivity extends BaseActivity<IPresenter> {
 
         cache_size.setText(CacheDataManager.INSTANCE.getTotalCacheSize(this));
 
+        cb_top.setChecked(CacheUtil.getTopArticle());
+
         clear_cache.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,6 +76,16 @@ public class SettingsActivity extends BaseActivity<IPresenter> {
                 });
             }
         });
+
+
+        cb_top.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                CacheUtil.setTopArticle(isChecked);
+                new SettingEvent(isChecked).post();
+            }
+        });
+
 
         ll_web.setOnClickListener(new View.OnClickListener() {
             @Override

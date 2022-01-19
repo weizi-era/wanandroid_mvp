@@ -128,16 +128,22 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         mRankList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!CacheUtil.isLogin()) {
-                    ToastUtil.show(MainActivity.this, "请先登录");
-                    goLogin();
-                } else {
-                    Intent intent = new Intent(MainActivity.this, RankActivity.class);
-                    intent.putExtra("rank", mUserRank.getText().toString());
-                    intent.putExtra("username", mUserName.getText().toString());
-                    intent.putExtra("score", mUserScore.getText().toString());
-                    startActivity(intent);
-                }
+
+                Intent intent = new Intent(MainActivity.this, RankActivity.class);
+                intent.putExtra("rank", mUserRank.getText().toString());
+                intent.putExtra("username", mUserName.getText().toString());
+                intent.putExtra("score", mUserScore.getText().toString());
+                startActivity(intent);
+//                if (!CacheUtil.isLogin()) {
+//                    ToastUtil.show(MainActivity.this, "请先登录");
+//                    goLogin();
+//                } else {
+//                    Intent intent = new Intent(MainActivity.this, RankActivity.class);
+//                    intent.putExtra("rank", mUserRank.getText().toString());
+//                    intent.putExtra("username", mUserName.getText().toString());
+//                    intent.putExtra("score", mUserScore.getText().toString());
+//                    startActivity(intent);
+//                }
             }
         });
 

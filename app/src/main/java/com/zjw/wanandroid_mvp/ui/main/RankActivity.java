@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.jess.arms.di.component.AppComponent;
 import com.kingja.loadsir.callback.Callback;
 import com.kingja.loadsir.core.LoadService;
@@ -26,6 +28,7 @@ import com.zjw.wanandroid_mvp.contract.main.RankListContract;
 import com.zjw.wanandroid_mvp.di.component.main.DaggerRankListComponent;
 import com.zjw.wanandroid_mvp.di.module.main.RankListModule;
 import com.zjw.wanandroid_mvp.presenter.main.RankListPresenter;
+import com.zjw.wanandroid_mvp.ui.main.share.OtherSharedActivity;
 import com.zjw.wanandroid_mvp.utils.RecyclerUtil;
 import com.zjw.wanandroid_mvp.utils.Utils;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
@@ -129,18 +132,18 @@ public class RankActivity extends BaseActivity<RankListPresenter> implements Ran
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new RankListAdapter(R.layout.item_rank);
         recyclerView.setAdapter(adapter);
-//        adapter.setOnItemClickListener(new OnItemClickListener() {
-//            @Override
-//            public void onItemClick(@NonNull @NotNull BaseQuickAdapter<?, ?> adapter, @NonNull @NotNull View view, int position) {
-//                RankListBean.Data.Datas datas = (RankListBean.Data.Datas) adapter.getItem(position);
-//                Intent intent = new Intent(RankActivity.this, OtherSharedActivity.class);
-//                intent.putExtra("id", datas.getUserId());
-//                intent.putExtra("username", datas.getUsername());
-//                intent.putExtra("score", datas.getCoinCount());
-//                intent.putExtra("rank", datas.getRank());
-//                startActivity(intent);
-//            }
-//        });
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull @NotNull BaseQuickAdapter<?, ?> adapter, @NonNull @NotNull View view, int position) {
+                RankListBean bean = (RankListBean) adapter.getItem(position);
+                Intent intent = new Intent(RankActivity.this, OtherSharedActivity.class);
+                intent.putExtra("id", bean.getUserId());
+                intent.putExtra("username", bean.getUsername());
+                intent.putExtra("score", bean.getCoinCount());
+                intent.putExtra("rank", bean.getRank());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

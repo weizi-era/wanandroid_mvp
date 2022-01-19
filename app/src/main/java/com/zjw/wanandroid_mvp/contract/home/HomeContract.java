@@ -3,7 +3,6 @@ package com.zjw.wanandroid_mvp.contract.home;
 
 import com.jess.arms.mvp.IModel;
 import com.zjw.wanandroid_mvp.base.IView;
-import com.youth.banner.Banner;
 import com.zjw.wanandroid_mvp.bean.ArticleBean;
 import com.zjw.wanandroid_mvp.bean.BannerBean;
 import com.zjw.wanandroid_mvp.bean.BaseBean;

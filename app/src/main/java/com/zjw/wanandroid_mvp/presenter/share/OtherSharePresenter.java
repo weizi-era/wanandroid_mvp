@@ -1,6 +1,7 @@
 package com.zjw.wanandroid_mvp.presenter.share;
 
 import com.jess.arms.di.scope.ActivityScope;
+import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.zjw.wanandroid_mvp.base.BasePresenter;
 import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.zjw.wanandroid_mvp.bean.BaseBean;
@@ -32,7 +33,7 @@ public class OtherSharePresenter extends BasePresenter<OtherShareContract.IOther
         mModel.getArticleList(page, id).subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(1, 0))
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindUntilEvent(mRootView, ActivityEvent.DESTROY))
                 .subscribe(new Observer<BaseBean<SharedBean>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
@@ -65,7 +66,7 @@ public class OtherSharePresenter extends BasePresenter<OtherShareContract.IOther
         mModel.collect(articleId).subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(1, 0))
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindUntilEvent(mRootView, ActivityEvent.DESTROY))
                 .subscribe(new Observer<BaseBean<Object>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
@@ -77,12 +78,14 @@ public class OtherSharePresenter extends BasePresenter<OtherShareContract.IOther
                         if (bean.getErrorCode() == Constant.SUCCESS) {
                             mRootView.collect(true, position);
                         } else {
+                            mRootView.collect(false, position);
                             mRootView.showMessage(bean.getErrorMsg());
                         }
                     }
 
                     @Override
                     public void onError(@NotNull Throwable e) {
+                        mRootView.collect(false, position);
                         mRootView.showMessage(HttpUtils.INSTANCE.getErrorText(e));
                     }
 
@@ -98,7 +101,7 @@ public class OtherSharePresenter extends BasePresenter<OtherShareContract.IOther
         mModel.unCollect(articleId).subscribeOn(Schedulers.io())
                 .retryWhen(new RetryWithDelay(1, 0))
                 .observeOn(AndroidSchedulers.mainThread())
-                .compose(RxLifecycleUtils.bindToLifecycle(mRootView))
+                .compose(RxLifecycleUtils.bindUntilEvent(mRootView, ActivityEvent.DESTROY))
                 .subscribe(new Observer<BaseBean<Object>>() {
                     @Override
                     public void onSubscribe(@NotNull Disposable d) {
@@ -108,16 +111,16 @@ public class OtherSharePresenter extends BasePresenter<OtherShareContract.IOther
                     @Override
                     public void onNext(@NotNull BaseBean<Object> bean) {
                         if (bean.getErrorCode() == Constant.SUCCESS) {
-                            mRootView.unCollect(true, position);
+                            mRootView.collect(false, position);
                         } else {
-                            mRootView.unCollect(false, position);
+                            mRootView.collect(true, position);
                             mRootView.showMessage(bean.getErrorMsg());
                         }
                     }
 
                     @Override
                     public void onError(@NotNull Throwable e) {
-                        mRootView.unCollect(false, position);
+                        mRootView.collect(true, position);
                         mRootView.showMessage(HttpUtils.INSTANCE.getErrorText(e));
                     }
 

@@ -84,7 +84,7 @@ public class TodoActivity extends BaseActivity<TodoListPresenter> implements Tod
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        loadService = LoadSir.getDefault().register(recyclerView, new Callback.OnReloadListener() {
+        loadService = LoadSir.getDefault().register(refreshLayout, new Callback.OnReloadListener() {
             @Override
             public void onReload(View v) {
                 loadService.showCallback(LoadingCallback.class);

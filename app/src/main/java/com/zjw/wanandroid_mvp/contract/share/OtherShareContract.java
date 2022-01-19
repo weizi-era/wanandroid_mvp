@@ -12,7 +12,6 @@ public interface OtherShareContract {
     interface IOtherShareView extends IView {
         void showArticleList(SharedBean bean);
         void collect(boolean collect, int position);
-        void unCollect(boolean collect, int position);
     }
 
     interface IOtherShareModel extends IModel {

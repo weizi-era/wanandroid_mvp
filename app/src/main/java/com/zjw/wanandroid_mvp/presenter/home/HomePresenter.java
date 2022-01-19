@@ -3,6 +3,7 @@ package com.zjw.wanandroid_mvp.presenter.home;
 
 import com.jess.arms.di.scope.FragmentScope;
 import com.zjw.wanandroid_mvp.base.BasePresenter;
+import com.zjw.wanandroid_mvp.utils.CacheUtil;
 import com.zjw.wanandroid_mvp.utils.RxLifecycleUtils;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.zjw.wanandroid_mvp.bean.ArticleBean;
@@ -85,7 +86,7 @@ public class HomePresenter extends BasePresenter<HomeContract.IHomeModel, HomeCo
                     public void onNext(@NotNull BaseBean<BasePageBean<List<ArticleBean>>> bean) {
                         if (bean.getErrorCode() == Constant.SUCCESS) {
                             BasePageBean<List<ArticleBean>> data = bean.getData();
-                            if (page == 0) {
+                            if (CacheUtil.getTopArticle() && page == 0) {
                                 mModel.getTopArticle()
                                         .subscribeOn(Schedulers.io())
                                         .retryWhen(new RetryWithDelay(1, 0))
@@ -116,7 +117,7 @@ public class HomePresenter extends BasePresenter<HomeContract.IHomeModel, HomeCo
                                             }
                                         });
                             } else {
-                                mRootView.showHomeArticle(data);
+                                mRootView.showHomeArticle(bean.getData());
                             }
                         } else {
                             mRootView.showMessage(bean.getErrorMsg());

@@ -48,6 +48,7 @@ import com.zjw.wanandroid_mvp.di.component.home.DaggerHomeComponent;
 import com.zjw.wanandroid_mvp.di.module.home.HomeModule;
 import com.zjw.wanandroid_mvp.event.CollectEvent;
 import com.zjw.wanandroid_mvp.event.LoginEvent;
+import com.zjw.wanandroid_mvp.event.SettingEvent;
 import com.zjw.wanandroid_mvp.presenter.home.HomePresenter;
 import com.zjw.wanandroid_mvp.ui.main.share.*;
 import com.zjw.wanandroid_mvp.ui.main.AuthorInfoActivity;
@@ -64,6 +65,7 @@ import com.zjw.wanandroid_mvp.widget.callback.LoadingCallback;
 import org.greenrobot.eventbus.Subscribe;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -85,6 +87,8 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
     private int currentPage = initPage;
 
     private ArticleAdapter homeAdapter;
+
+    private List<ArticleBean> topList;
 
 
     @Override
@@ -170,7 +174,7 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
         homeAdapter.setHeaderView(header);
         recyclerView.setAdapter(homeAdapter);
 
-        homeAdapter.addChildClickViewIds(R.id.author_name, R.id.iv_collection);
+        homeAdapter.addChildClickViewIds(R.id.iv_collection);
         homeAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull @NotNull BaseQuickAdapter adapter, @NonNull @NotNull View view, int position) {
@@ -185,17 +189,6 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                 ArticleBean bean = (ArticleBean) adapter.getItem(position);
                 CollectView mCollection = view.findViewById(R.id.iv_collection);
                 switch (view.getId()) {
-                    case R.id.author_name:
-                        if (TextUtils.isEmpty(bean.getAuthor())) {
-                            Intent intent = new Intent(mContext, OtherSharedActivity.class);
-                            intent.putExtra("id", bean.getUserId());
-                            startActivity(intent);
-                        } else {
-                            Intent intent = new Intent(mContext, AuthorInfoActivity.class);
-                            intent.putExtra("author", bean.getAuthor());
-                            startActivity(intent);
-                        }
-                        break;
                     case R.id.iv_collection:
                         if (mCollection.isChecked()) {
                             mCollection.setImageResource(R.mipmap.star_default);
@@ -266,6 +259,10 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
                 }
             }, 200);
         }
+
+
+        topList = homeAdapter.getData().subList(0, 6);
+
     }
 
     /**
@@ -331,6 +328,19 @@ public class HomeFragment extends BaseFragment<HomePresenter> implements HomeCon
 
             homeAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Subscribe
+    public void SettingEvent(@NonNull SettingEvent event) {
+        List<ArticleBean> data = homeAdapter.getData();
+
+        if (event.isChecked()) {
+            data.addAll(0, topList);
+        } else {
+            data.removeAll(topList);
+        }
+        homeAdapter.setNewInstance(data);
+        homeAdapter.notifyDataSetChanged();
     }
 
 

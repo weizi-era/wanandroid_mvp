@@ -1,7 +1,12 @@
 package com.zjw.wanandroid_mvp.utils;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.text.TextUtils;
 
+import androidx.preference.PreferenceManager;
+
+import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.tencent.mmkv.MMKV;
@@ -160,5 +165,13 @@ public class CacheUtil {
     public static void setHistorySearchCache(String historySearch) {
         MMKV mmkv = MMKV.mmkvWithID("cache");
         mmkv.encode("history", historySearch);
+    }
+
+    public static boolean getTopArticle() {
+        return SPUtils.getInstance().getBoolean("top", true);
+    }
+
+    public static void setTopArticle(boolean isShow) {
+        SPUtils.getInstance().put("top", isShow);
     }
 }

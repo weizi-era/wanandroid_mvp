@@ -32,11 +32,26 @@ android {
             buildConfigField "boolean", "LOG_DEBUG",  "false"
             buildConfigField "boolean", "USE_CANARY", "false"
             buildConfigField "String", "BUGLY_KEY", '"5a5f6366fc"'//bugly key
-            minifyEnabled true//开启混淆
-            shrinkResources true
+            minifyEnabled false//开启混淆
+            shrinkResources false
             zipAlignEnabled true//去除无用资源
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "ResourceType"
+        abortOnError false
+    }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        jumboMode = true
+        preDexLibraries = false
+        additionalParameters = [
+                '--multi-dex',//多分包
+                '--set-max-idx-number=60000'//每个包内方法数上限
+        ]
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
