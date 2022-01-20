@@ -149,6 +149,7 @@
                     android:text="设置App的主题颜色" />
 
                 <com.afollestad.materialdialogs.color.view.ColorCircleView
+                    android:id="@+id/colorCircleView"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
@@ -196,9 +197,11 @@
                 android:textColor="@color/purple_200"/>
 
             <LinearLayout
+                android:id="@+id/ll_version"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:foreground="?attr/selectableItemBackground"
                 android:padding="15dp">
 
                 <TextView

@@ -4,8 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
         android:name="com.jess.arms.base.BaseApplication"
@@ -46,6 +48,22 @@
         <meta-data
             android:name="com.zjw.wanandroid_mvp.widget.GlobalConfiguration"
             android:value="ConfigModule" />
+
+        <!-- 蒲公英 apiKey -->
+        <meta-data android:name="PGYER_API_KEY"
+            android:value="6986605f21093d9b5882a8bf2a3b15d3"/>
+        <!-- 蒲公英 appKey -->
+        <meta-data android:name="PGYER_APP_KEY"
+            android:value="b764888a9b17b5de6a03329e5c2d3807"/>
+
+        <meta-data
+            android:name="PGYER_FRONTJS_KEY"
+            android:value="b8adfe9ec10c649f0fe827a83040f73d" />
+
+        <!--添加新版本检测-->
+        <meta-data
+            android:name="PGYER_FEATURE_CHECK_UNPDATE"
+            android:value="true" />
 
         <activity android:name=".ui.MainActivity">
             <intent-filter>

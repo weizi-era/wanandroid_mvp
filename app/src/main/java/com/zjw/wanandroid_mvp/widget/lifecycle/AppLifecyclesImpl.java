@@ -9,6 +9,8 @@ import com.blankj.utilcode.util.Utils;
 import com.jess.arms.base.delegate.AppLifecycles;
 import com.kingja.loadsir.callback.SuccessCallback;
 import com.kingja.loadsir.core.LoadSir;
+import com.pgyer.pgyersdk.PgyerSDKManager;
+import com.pgyer.pgyersdk.pgyerenum.Features;
 import com.tencent.mmkv.MMKV;
 import com.zjw.wanandroid_mvp.widget.callback.EmptyCallback;
 import com.zjw.wanandroid_mvp.widget.callback.ErrorCallback;
@@ -30,6 +32,12 @@ public class AppLifecyclesImpl implements AppLifecycles {
 
         // mmkv 初始化
         MMKV.initialize(application.getFilesDir().getAbsolutePath() + "/mmkv");
+
+        // 蒲公英 版本检测
+        new PgyerSDKManager.Init()
+                .setContext(application)
+                .enable(Features.CHECK_UPDATE)
+                .start();
 
         //界面加载管理 初始化
         LoadSir.beginBuilder()

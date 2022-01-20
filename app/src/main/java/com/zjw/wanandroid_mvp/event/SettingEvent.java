@@ -15,4 +15,7 @@ public class SettingEvent extends BaseEvent {
     public SettingEvent(boolean isChecked) {
         this.isChecked = isChecked;
     }
+
+    public SettingEvent() {
+    }
 }

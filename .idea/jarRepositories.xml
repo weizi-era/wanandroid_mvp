@@ -36,5 +36,15 @@
       <option name="name" value="maven2" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://frontjs-static.pgyer.com/dist/sdk/pgyersdk" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven3" />
+      <option name="name" value="maven3" />
+      <option name="url" value="https://raw.githubusercontent.com/Pgyer/analytics/master" />
+    </remote-repository>
   </component>
 </project>

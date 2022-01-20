@@ -100,6 +100,11 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     }
 
     @Override
+    protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Override
     public void initData(@Nullable Bundle savedInstanceState) {
         mToolbar.setTitle(getString(R.string.app_name));
 
@@ -134,16 +139,6 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
                 intent.putExtra("username", mUserName.getText().toString());
                 intent.putExtra("score", mUserScore.getText().toString());
                 startActivity(intent);
-//                if (!CacheUtil.isLogin()) {
-//                    ToastUtil.show(MainActivity.this, "请先登录");
-//                    goLogin();
-//                } else {
-//                    Intent intent = new Intent(MainActivity.this, RankActivity.class);
-//                    intent.putExtra("rank", mUserRank.getText().toString());
-//                    intent.putExtra("username", mUserName.getText().toString());
-//                    intent.putExtra("score", mUserScore.getText().toString());
-//                    startActivity(intent);
-//                }
             }
         });
 
